@@ -28,3 +28,8 @@ want available to my guests is:
  * Guests are able to see what is playing and what will be playing
  * Guests and I are able to do these actions from smart phones
  * Guests and I are able to do these actions at the machine itself
+
+Contributions and Acknowledgements
+----------------------------------
+A large part of the Zune API code comes from the
+link:http://zunelcd.codeplex.com/[Zune LCD] project.
