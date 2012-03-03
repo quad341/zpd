@@ -66,11 +66,9 @@
     </Reference>
     <Reference Include="ZuneDBApi">
       <HintPath>C:\Program Files\Zune\ZuneDBApi.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="ZuneShell">
       <HintPath>C:\Program Files\Zune\ZuneShell.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +110,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "C:\Program Files\Zune\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
