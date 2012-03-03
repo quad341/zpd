@@ -1,0 +1,30 @@
+ZPD: Zune Player Daemon
+=======================
+Paul_Campbell_and_Jim_Wordelman
+:toc:
+:icons:
+:numbered:
+
+What is this?
+-------------
+ZPD is a project to create a media playing daemon on Windows using
+link:http://www.zune.net/[Zune] as the player. The reason for wanting to
+use Zune is that it allows for using a
+link:http://www.zune.net/en-us/products/zunepass/default.htm[Zune Pass] to
+play lots of music legally without need to purchase ever track.
+
+The player daemon is supposed to be completely remotely controlled similar
+to projects such as link:http://sourceforge.net/projects/musicpd/[MPD].
+
+What is the end goal?
+---------------------
+It's good to always have a measurement of completion. The actual intent
+is to use this as the DJ at my (Jim's) wedding reception. The features I
+want available to my guests is:
+
+ * I can control the playback (starting, stopping, skipping)
+ * Guests are able to search for music
+ * Guests are able to add music to the playlist
+ * Guests are able to see what is playing and what will be playing
+ * Guests and I are able to do these actions from smart phones
+ * Guests and I are able to do these actions at the machine itself
