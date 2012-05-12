@@ -5,13 +5,14 @@ using System.Text;
 using VosSoft.ZuneLcd.Api;
 using System.Threading;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 
 
 
 namespace zpd
 {
     [ServiceContract(Namespace = "http://zpd")]
-    public interface IZPDClient
+    public interface IZPDService
     {
         [OperationContract]
         void Play();
@@ -21,29 +22,76 @@ namespace zpd
         void Close();
     }
 
-    class Program
+    class ZPDService : IZPDService
     {
-        static ZuneApi zune;
-        static void Main(string[] args)
+        ZuneApi zune;
+        Thread zuneThread;
+
+        private void EnsureZune()
+        {
+            if (zune == null)
+            {
+                Init();
+                Thread.Sleep(10000);
+            }
+        }
+
+        private void Init()
         {
             zune = new ZuneApi();
-            var zuneThread = new Thread(ZuneThread);
+            zuneThread = new Thread(ZuneThread);
             zuneThread.Start();
-            do
-            {
-                Thread.Sleep(1000);
-            }
-            while (!zune.IsReady);
+        }
 
+        public void Play()
+        {
+            EnsureZune();
             zune.Play();
-            var c = Console.ReadKey();
+        }
+
+        public void Pause()
+        {
+            EnsureZune();
+            zune.Pause();
+        }
+
+        public void Close()
+        {
+            EnsureZune();
             zune.Close();
             zuneThread.Join();
         }
 
-        static void ZuneThread()
+        private void ZuneThread()
         {
             zune.Launch();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Uri baseAddress = new Uri("http://localhost:8000/zpd");
+            var host = new ServiceHost(typeof(ZPDService), baseAddress);
+            try
+            {
+                host.AddServiceEndpoint(typeof(IZPDService), new WSHttpBinding(), "Service");
+                var smb = new ServiceMetadataBehavior() { HttpGetEnabled = true };
+                host.Description.Behaviors.Add(smb);
+                host.Open();
+                Console.WriteLine("Service is ready. Press <ENTER> to terminate");
+                Console.ReadLine();
+                host.Close();
+            }
+            catch (CommunicationException ce)
+            {
+                Console.WriteLine("An exception occurred: {0}", ce.Message);
+                host.Abort();
+            }
+
+            Console.WriteLine("Press <ENTER> to close");
+            Console.ReadLine();
         }
     }
 }
