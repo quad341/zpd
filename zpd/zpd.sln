@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zpd", "zpd.csproj", "{70D72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZuneApi", "..\ZuneApi\ZuneApi.csproj", "{EC7553A4-D88C-4E64-A25C-EFCC118EF4FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugClient", "..\DebugClient\DebugClient.csproj", "{F0889DFB-C2C7-4E10-8B7F-ACD7FBDAF98F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingClient", "..\TestingClient\TestingClient.csproj", "{F0889DFB-C2C7-4E10-8B7F-ACD7FBDAF98F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
