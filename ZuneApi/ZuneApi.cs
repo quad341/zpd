@@ -7,6 +7,8 @@ using Microsoft.Zune.Shell;
 using MicrosoftZuneLibrary;
 using MicrosoftZunePlayback;
 using ZuneUI;
+using System.Text;
+using System.Diagnostics;
 
 namespace VosSoft.ZuneLcd.Api
 {
@@ -415,6 +417,11 @@ namespace VosSoft.ZuneLcd.Api
             CurrentTrack = new Track();
             TrackType = TrackType.None;
 
+            foreach (MediaType mt in System.Enum.GetValues(typeof(MediaType)))
+            {
+                Console.WriteLine("{0} is uint {1}", mt.ToString(), (uint)mt);
+            }
+
             ZuneApi.Instance = this;
         }
 
@@ -631,16 +638,20 @@ namespace VosSoft.ZuneLcd.Api
                 if (returnValue >= 0)
                 {
                     library.CleanupTransientMedia();
-                    MicrosoftZuneInterop.QueryPropertyBag bag = new MicrosoftZuneInterop.QueryPropertyBag();
+                    
+                    //MicrosoftZuneInterop.QueryPropertyBag bag = new MicrosoftZuneInterop.QueryPropertyBag();
                     //bag.SetValue("kiIndex_Title", "Innocence");
                     ZuneQueryList searchResult = library.QueryDatabase(EQueryType.eQueryTypeAllTracks, 0, EQuerySortType.eQuerySortOrderNone,
-                        0, /*bag*/null);
+                        0, null);
                     //ZuneQueryList searchResult = library.GetTracksByArtist(0, CurrentTrack.ArtistId, EQuerySortType.eQuerySortOrderAscending, (uint)SchemaMap.kiIndex_Abstract);
-                    for (uint i = 0; i < searchResult.Count; i++)
+                    if (null != searchResult)
                     {
-                        Console.WriteLine(searchResult.GetFieldValue(i, typeof(String), (uint)SchemaMap.kiIndex_Title, "no title found"));
+                        /*for (uint i = 0; i < searchResult.Count; i++)
+                        {
+                            Console.WriteLine(searchResult.GetFieldValue(i, typeof(String), (uint)SchemaMap.kiIndex_Title, "no title found"));
+                        }*/
+                        result = searchResult.GetFieldValue(0, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title) + " (" + searchResult.Count + ")";
                     }
-                    result = searchResult.GetFieldValue(0, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title) + " (" + searchResult.Count + ")";
                 }
             }
             return result;
@@ -719,6 +730,117 @@ namespace VosSoft.ZuneLcd.Api
         public bool ToggleShuffle()
         {
             return (Shuffling = !shuffling);
+        }
+
+        [CLSCompliant(false)]
+        public void AddTrackToPlaylist(int mediaId, MediaType mediaType)
+        {
+            // create a list of tracks to append
+            var track = new LibraryPlaybackTrack(mediaId, mediaType, null);
+            var list = new ArrayList(1);
+            list.Add(track);
+
+            // insert the list at the end
+            var startIdx = TrackCount;
+            PlaylistManager.AddItemsToTrackList(null/*items*/, list, ref startIdx/*startIdx*/, false/*allowVideo*/, false/*allowPictures*/, false/*?materializeMarketplaceTracks*/, null);
+        }
+
+        public static MediaType MediaTypeFromUint(uint mediaTypeId)
+        {
+            var mt = (MediaType)mediaTypeId;
+#if DEBUG
+            var mtDebug = MediaType.Undefined;
+            switch (mediaTypeId)
+            {
+                case 3:
+                    mtDebug = MediaType.Track;
+                    break;
+                case 4:
+                    mtDebug = MediaType.Video;
+                    break;
+                case 5:
+                    mtDebug = MediaType.Photo;
+                    break;
+                case 9:
+                    mtDebug = MediaType.Playlist;
+                    break;
+                case 11:
+                    mtDebug = MediaType.Album;
+                    break;
+                case 17:
+                    mtDebug = MediaType.PodcastEpisode;
+                    break;
+                case 18:
+                    mtDebug = MediaType.Podcast;
+                    break;
+                case 20:
+                    mtDebug = MediaType.MediaFolder;
+                    break;
+                case 21:
+                    mtDebug = MediaType.Genre;
+                    break;
+                case 32:
+                    mtDebug = MediaType.AudioMP4;
+                    break;
+                case 33:
+                    mtDebug = MediaType.AudioMP3;
+                    break;
+                case 34:
+                    mtDebug = MediaType.AudioWMA;
+                    break;
+                case 35:
+                    mtDebug = MediaType.AudioWAV;
+                    break;
+                case 36:
+                    mtDebug = MediaType.ImageJPEG;
+                    break;
+                case 37:
+                    mtDebug = MediaType.VideoMP4;
+                    break;
+                case 38:
+                    mtDebug = MediaType.VideoMPG;
+                    break;
+                case 39:
+                    mtDebug = MediaType.VideoWMV;
+                    break;
+                case 40:
+                    mtDebug = MediaType.VideoQT;
+                    break;
+                case 41:
+                    mtDebug = MediaType.AudioQT;
+                    break;
+                case 42:
+                    mtDebug = MediaType.VideoDVRMS;
+                    break;
+                case 43:
+                    mtDebug = MediaType.VideoMBR;
+                    break;
+                case 44:
+                    mtDebug = MediaType.VideoAVI;
+                    break;
+                case 50:
+                    mtDebug = MediaType.PlaylistChannel;
+                    break;
+                case 56:
+                    mtDebug = MediaType.PlaylistContentItem;
+                    break;
+                case 65:
+                    mtDebug = MediaType.Artist;
+                    break;
+                case 96:
+                    mtDebug = MediaType.UserCard;
+                    break;
+                case 110:
+                    mtDebug = MediaType.Application;
+                    break;
+                case 4294967295:
+                default:
+                    mtDebug = MediaType.Undefined;
+                    break;
+            }
+            Debug.Assert(mt == mtDebug);
+#endif //DEBUG
+            return mt;
         }
 
         #endregion
