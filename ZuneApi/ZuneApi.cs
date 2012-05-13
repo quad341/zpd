@@ -618,21 +618,33 @@ namespace VosSoft.ZuneLcd.Api
             }), DeferredInvokePriority.Low); // low priority to save performance
         }
 
-        //public String Search(String name)
-        //{
-        //    ZuneLibrary library = new ZuneLibrary();
-        //    //library.Initialize();
-        //    MicrosoftZuneInterop.QueryPropertyBag bag = new MicrosoftZuneInterop.QueryPropertyBag();
-        //    bag.SetValue("kiIndex_Title", "Innocence");
-        //    ZuneQueryList searchResult = library.QueryDatabase(EQueryType.eQueryTypeAllTracks, 0, EQuerySortType.eQuerySortOrderAscending,
-        //        (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_DisplayArtist, bag);
-        //    //ZuneQueryList searchResult = library.GetTracksByArtist(0, CurrentTrack.ArtistId, EQuerySortType.eQuerySortOrderAscending, (uint)SchemaMap.kiIndex_Abstract);
-        //    for (uint i = 0; i < searchResult.Count; i++)
-        //    {
-        //        System.Diagnostics.Trace.WriteLine(searchResult.GetFieldValue(i, typeof(String), (uint)SchemaMap.kiIndex_Title, "no title found"));
-        //    }
-        //    return searchResult.GetFieldValue(0, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title) + " (" + searchResult.Count + ")";
-        //}
+        // Using http://blog.ctaggart.com/2010/08/query-zune-music-collection-with-f.html#!/2010/08/query-zune-music-collection-with-f.html as a base
+        public String Search(String name)
+        {
+            ZuneLibrary library = new ZuneLibrary();
+            var result = "";
+            var dbReloaded = false;
+            int returnValue = library.Initialize(null, out dbReloaded);
+            if (returnValue >= 0)
+            {
+                library.Phase2Initialization(out returnValue);
+                if (returnValue >= 0)
+                {
+                    library.CleanupTransientMedia();
+                    MicrosoftZuneInterop.QueryPropertyBag bag = new MicrosoftZuneInterop.QueryPropertyBag();
+                    //bag.SetValue("kiIndex_Title", "Innocence");
+                    ZuneQueryList searchResult = library.QueryDatabase(EQueryType.eQueryTypeAllTracks, 0, EQuerySortType.eQuerySortOrderNone,
+                        0, /*bag*/null);
+                    //ZuneQueryList searchResult = library.GetTracksByArtist(0, CurrentTrack.ArtistId, EQuerySortType.eQuerySortOrderAscending, (uint)SchemaMap.kiIndex_Abstract);
+                    for (uint i = 0; i < searchResult.Count; i++)
+                    {
+                        Console.WriteLine(searchResult.GetFieldValue(i, typeof(String), (uint)SchemaMap.kiIndex_Title, "no title found"));
+                    }
+                    result = searchResult.GetFieldValue(0, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title) + " (" + searchResult.Count + ")";
+                }
+            }
+            return result;
+        }
 
         /// <summary>
         /// Toggles the fast forward value.

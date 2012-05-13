@@ -70,7 +70,24 @@ namespace zpd
 
     class Program
     {
+        static ZuneApi zune;
         static void Main(string[] args)
+        {
+            //StartService();
+            zune = new ZuneApi();
+            //var zuneThread = new Thread(ZuneThread);
+            //zuneThread.Start();
+            //Thread.Sleep(10000);
+            var result = zune.Search("Nine");
+            Console.WriteLine("Result: {0}", result);
+            Console.ReadLine();
+        }
+        static void ZuneThread()
+        {
+            zune.Launch();
+        }
+
+        static void StartService()
         {
             Uri baseAddress = new Uri("http://localhost:8000/zpd");
             var host = new ServiceHost(typeof(ZPDService), baseAddress);
