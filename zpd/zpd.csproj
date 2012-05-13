@@ -74,12 +74,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ZuneApi\ZuneApi.csproj">
-      <Project>{EC7553A4-D88C-4E64-A25C-EFCC118EF4FF}</Project>
-      <Name>ZuneApi</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -105,6 +99,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZuneApi\ZuneApi.csproj">
+      <Project>{EC7553A4-D88C-4E64-A25C-EFCC118EF4FF}</Project>
+      <Name>ZuneApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

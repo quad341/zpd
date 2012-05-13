@@ -417,11 +417,6 @@ namespace VosSoft.ZuneLcd.Api
             CurrentTrack = new Track();
             TrackType = TrackType.None;
 
-            foreach (MediaType mt in System.Enum.GetValues(typeof(MediaType)))
-            {
-                Console.WriteLine("{0} is uint {1}", mt.ToString(), (uint)mt);
-            }
-
             ZuneApi.Instance = this;
         }
 
@@ -651,6 +646,10 @@ namespace VosSoft.ZuneLcd.Api
                             Console.WriteLine(searchResult.GetFieldValue(i, typeof(String), (uint)SchemaMap.kiIndex_Title, "no title found"));
                         }*/
                         result = searchResult.GetFieldValue(0, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title) + " (" + searchResult.Count + ")";
+                        var mediaId = (UInt32)searchResult.GetFieldValue(0, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaID);
+                        var mediaTypeId = (UInt32)searchResult.GetFieldValue(0, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaType);
+
+                        AddTrackToCurrentPlaylist(Convert.ToInt32(mediaId), MediaTypeFromUint(mediaTypeId));
                     }
                 }
             }
@@ -733,18 +732,17 @@ namespace VosSoft.ZuneLcd.Api
         }
 
         [CLSCompliant(false)]
-        public void AddTrackToPlaylist(int mediaId, MediaType mediaType)
+        public void AddTrackToCurrentPlaylist(int mediaId, MediaType mediaType)
         {
             // create a list of tracks to append
             var track = new LibraryPlaybackTrack(mediaId, mediaType, null);
-            var list = new ArrayList(1);
-            list.Add(track);
-
-            // insert the list at the end
-            var startIdx = TrackCount;
-            PlaylistManager.AddItemsToTrackList(null/*items*/, list, ref startIdx/*startIdx*/, false/*allowVideo*/, false/*allowPictures*/, false/*?materializeMarketplaceTracks*/, null);
+            Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
+            {
+                TransportControls.Instance.CurrentPlaylist.Add(track);
+            }), DeferredInvokePriority.Normal);
         }
 
+        [CLSCompliant(false)]
         public static MediaType MediaTypeFromUint(uint mediaTypeId)
         {
             var mt = (MediaType)mediaTypeId;
