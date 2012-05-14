@@ -75,11 +75,11 @@ namespace zpd
         {
             //StartService();
             zune = new ZuneApi();
-            var zuneThread = new Thread(ZuneThread);
-            zuneThread.Start();
-            Thread.Sleep(10000);
-            var result = zune.Search("Nine");
-            Console.WriteLine("Result: {0}", result);
+            //var zuneThread = new Thread(ZuneThread);
+            //zuneThread.Start();
+            //Thread.Sleep(10000);
+            zune.ReIndexMusic();
+            Console.WriteLine(zune.Search("nine"));
             Console.ReadLine();
         }
         static void ZuneThread()

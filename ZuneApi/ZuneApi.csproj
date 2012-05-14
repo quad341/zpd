@@ -60,6 +60,9 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lucene.Net">
+      <HintPath>C:\Users\jim\Downloads\lucene.net-2.9.4g\bin\Lucene.Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="UIX">
       <HintPath>C:\Program Files\Zune\UIX.dll</HintPath>

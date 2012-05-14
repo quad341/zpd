@@ -9,6 +9,13 @@ using MicrosoftZunePlayback;
 using ZuneUI;
 using System.Text;
 using System.Diagnostics;
+using Lucene.Net.Documents;
+using Lucene.Net.Index;
+using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Store;
+using System.IO;
+using Lucene.Net.QueryParsers;
+using Lucene.Net.Search;
 
 namespace VosSoft.ZuneLcd.Api
 {
@@ -28,6 +35,8 @@ namespace VosSoft.ZuneLcd.Api
         // transport controls constants for better performance
         private const string TC_CurrentTrack = "CurrentTrack";
         private const string TC_CurrentPlaylist = "CurrentPlaylist";
+
+        private readonly string LUCENE_INDEX_DIRECTORY;
 
         #endregion
 
@@ -417,6 +426,8 @@ namespace VosSoft.ZuneLcd.Api
             CurrentTrack = new Track();
             TrackType = TrackType.None;
 
+            LUCENE_INDEX_DIRECTORY = Environment.GetEnvironmentVariable("localappdata") + "\\VosSoft\\ZuneApi";
+
             ZuneApi.Instance = this;
         }
 
@@ -620,11 +631,36 @@ namespace VosSoft.ZuneLcd.Api
             }), DeferredInvokePriority.Low); // low priority to save performance
         }
 
+        public String Search(String queryString)
+        {
+            var query = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_29, new String[]{"artist", "album", "title"}, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29)).Parse(queryString);
+            var searcher = new IndexSearcher(IndexReader.Open(new SimpleFSDirectory(new DirectoryInfo(LUCENE_INDEX_DIRECTORY)), true));
+            var collector = TopScoreDocCollector.Create(100/*numHits*/, true/*docsSortedInOrder*/);
+            searcher.Search(query, collector);
+            var hits = collector.TopDocs().ScoreDocs;
+
+            var result = "";
+
+            for (var i = 0; i < hits.Length; i++ )
+            {
+                var docId = hits[i].Doc;
+                var doc = searcher.Doc(docId);
+                result += doc.GetField("title").StringValue() + " by " + doc.GetField("artist").StringValue() + " on " + doc.GetField("album").StringValue() + ".[Score:" + hits[i].Score + "]\r\n";
+            }
+
+            searcher.Close();
+
+            return result;
+        }
+
         // Using http://blog.ctaggart.com/2010/08/query-zune-music-collection-with-f.html#!/2010/08/query-zune-music-collection-with-f.html as a base
-        public String Search(String name)
+        /// <summary>
+        /// Reindexes the music by iterating through all music in the Zune Library and saving it in the local Lucene database. Required for search to work correctly
+        /// </summary>
+        /// <seealso cref=" cref="Search"/>
+        public void ReIndexMusic()
         {
             ZuneLibrary library = new ZuneLibrary();
-            var result = "";
             var dbReloaded = false;
             int returnValue = library.Initialize(null, out dbReloaded);
             if (returnValue >= 0)
@@ -634,26 +670,35 @@ namespace VosSoft.ZuneLcd.Api
                 {
                     library.CleanupTransientMedia();
                     
-                    //MicrosoftZuneInterop.QueryPropertyBag bag = new MicrosoftZuneInterop.QueryPropertyBag();
-                    //bag.SetValue("kiIndex_Title", "Innocence");
-                    ZuneQueryList searchResult = library.QueryDatabase(EQueryType.eQueryTypeAllTracks, 0, EQuerySortType.eQuerySortOrderNone,
-                        0, null);
-                    //ZuneQueryList searchResult = library.GetTracksByArtist(0, CurrentTrack.ArtistId, EQuerySortType.eQuerySortOrderAscending, (uint)SchemaMap.kiIndex_Abstract);
+                    ZuneQueryList searchResult = library.QueryDatabase(EQueryType.eQueryTypeAllTracks, 0, EQuerySortType.eQuerySortOrderNone, 0, null);
                     if (null != searchResult)
                     {
-                        /*for (uint i = 0; i < searchResult.Count; i++)
+                        // we have results, index them
+                        var writer = new IndexWriter(new SimpleFSDirectory(new DirectoryInfo(LUCENE_INDEX_DIRECTORY)), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29), true, IndexWriter.MaxFieldLength.UNLIMITED);
+                        for (uint i = 0; i < searchResult.Count; i++)
                         {
-                            Console.WriteLine(searchResult.GetFieldValue(i, typeof(String), (uint)SchemaMap.kiIndex_Title, "no title found"));
-                        }*/
-                        result = searchResult.GetFieldValue(0, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title) + " (" + searchResult.Count + ")";
-                        var mediaId = (UInt32)searchResult.GetFieldValue(0, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaID);
-                        var mediaTypeId = (UInt32)searchResult.GetFieldValue(0, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaType);
+                            // add a document for each song. We will only store the mediaId and mediaTypeId and store+index the title, artist, and album
+                            var doc = new Document();
 
-                        AddTrackToCurrentPlaylist(Convert.ToInt32(mediaId), MediaTypeFromUint(mediaTypeId));
+                            var mediaId = (UInt32)searchResult.GetFieldValue(i, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaID);
+                            var mediaTypeId = (UInt32)searchResult.GetFieldValue(i, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaType);
+                            var artist = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_DisplayArtist);
+                            var title = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title);
+                            var album = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_WMAlbumTitle);
+
+                            doc.Add(new Field("mediaId", mediaId.ToString(), Field.Store.YES, Field.Index.NO));
+                            doc.Add(new Field("mediaTypeId", mediaTypeId.ToString(), Field.Store.YES, Field.Index.NO));
+                            doc.Add(new Field("artist", artist, Field.Store.YES, Field.Index.ANALYZED));
+                            doc.Add(new Field("title", title, Field.Store.YES, Field.Index.ANALYZED));
+                            doc.Add(new Field("album", album, Field.Store.YES, Field.Index.ANALYZED));
+                            
+                            writer.AddDocument(doc);
+                        }
+                        writer.Commit();
+                        writer.Close();
                     }
                 }
             }
-            return result;
         }
 
         /// <summary>
@@ -739,6 +784,19 @@ namespace VosSoft.ZuneLcd.Api
             Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
             {
                 TransportControls.Instance.CurrentPlaylist.Add(track);
+            }), DeferredInvokePriority.Normal);
+        }
+
+        public void RemoveTrackAtIndexFromCurrentPlaylist(int index)
+        {
+            if (index < 0 || index >= TrackCount)
+            {
+                throw new ArgumentOutOfRangeException("index", "index must be >=0 and < TrackCount");
+            }
+
+            Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
+            {
+                TransportControls.Instance.CurrentPlaylist.RemoveAt(index);
             }), DeferredInvokePriority.Normal);
         }
 
