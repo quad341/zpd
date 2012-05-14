@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using VosSoft.ZuneLcd.Api;
-using System.Threading;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Threading;
+using VosSoft.ZuneLcd.Api;
 
 
 
@@ -95,6 +92,72 @@ namespace zpd
         private void ZuneThread()
         {
             zune.Launch();
+        }
+
+
+        public void PlaySongIndex(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Stop()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NextTrack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PreviousTrack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToggleFastForward()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToggleRewind()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToggleShuffle()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ToggleRepeat()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReIndexLibrary()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void QueueTrack(int mediaId, int mediaTypeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void QueueTrackAtIndex(int mediaId, int mediaTypeId, int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveTrackAtIndex(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClosePlayer()
+        {
+            throw new NotImplementedException();
         }
     }
 
