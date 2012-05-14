@@ -654,6 +654,7 @@ namespace VosSoft.ZuneLcd.Api
         }
 
         // Using http://blog.ctaggart.com/2010/08/query-zune-music-collection-with-f.html#!/2010/08/query-zune-music-collection-with-f.html as a base
+        // Also found some help at http://averagedeveloper.blogspot.com/2012/04/querying-zunedbapidll.html
         /// <summary>
         /// Reindexes the music by iterating through all music in the Zune Library and saving it in the local Lucene database. Required for search to work correctly
         /// </summary>
@@ -797,6 +798,15 @@ namespace VosSoft.ZuneLcd.Api
             Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
             {
                 TransportControls.Instance.CurrentPlaylist.RemoveAt(index);
+            }), DeferredInvokePriority.Normal);
+        }
+
+        public void GetCurrentTrackPosition(GetCurrentPositionCallback callback)
+        {
+            // Because this is not synchronous, this might actually be a little off.
+            Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
+            {
+                callback(TransportControls.Instance.CurrentTrackPosition);
             }), DeferredInvokePriority.Normal);
         }
 
@@ -1241,4 +1251,14 @@ namespace VosSoft.ZuneLcd.Api
     /// </summary>
     /// <seealso cref="ZuneApi.GetTracks(int, int, TrackListCallback)"/>
     public delegate void TrackListCallback(Track[] tracks);
+
+
+    /// <summary>
+    /// The callback for the <see cref="ZuneApi.GetCurrentPosition(GetCurrentPositionCallback)"/> method.
+    /// <para>
+    /// <remarks>Note that this delegate is not thread safe, please take the necessary precautions.</remarks>
+    /// </para>
+    /// </summary>
+    /// <seealso cref="ZuneApi.GetCurrentPosition(GetCurrentPositionCallback)"/>
+    public delegate void GetCurrentPositionCallback(float currentPosition);
 }

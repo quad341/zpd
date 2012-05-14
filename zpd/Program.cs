@@ -11,19 +11,49 @@ using System.ServiceModel.Description;
 
 namespace zpd
 {
+    //TODO: many methods should support authentication in some way
     [ServiceContract(Namespace = "http://zpd")]
     public interface IZPDService
     {
         [OperationContract]
         void Play();
         [OperationContract]
+        void PlaySongIndex(int index);
+        [OperationContract]
         void Pause();
         [OperationContract]
-        void Close();
+        void Stop();
+        [OperationContract]
+        void NextTrack();
+        [OperationContract]
+        void PreviousTrack();
+        [OperationContract]
+        void ToggleFastForward();
+        [OperationContract]
+        void ToggleRewind();
+        [OperationContract]
+        void ToggleShuffle();
+        [OperationContract]
+        void ToggleRepeat();
+        [OperationContract]
+        void ReIndexLibrary();
+        //TODO:Search needs to return sane types
+
+        [OperationContract]
+        void QueueTrack(int mediaId, int mediaTypeId);
+        [OperationContract]
+        void QueueTrackAtIndex(int mediaId, int mediaTypeId, int index);
+        [OperationContract]
+        void RemoveTrackAtIndex(int index);
+        //TODO:Get current track should return sane type; should get current info for current track and time
+        //TODO:Get current queue
+        [OperationContract]
+        void ClosePlayer();
     }
 
     class ZPDService : IZPDService
     {
+        //TODO: this shouldn't be directly calling the ZuneApi; should make intermediate for MediaPlayerManager to take care of threading, etc.
         ZuneApi zune;
         Thread zuneThread;
 
