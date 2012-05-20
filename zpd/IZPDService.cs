@@ -62,12 +62,4 @@ namespace zpd
         [OperationContract]
         void ClosePlayer();
     }
-
-    public class ZpdCurrentPlayerState
-    {
-        public ZpdTrack CurrentTrack { get; private set; }
-        public float CurrentTrackPosition { get; private set; }
-        public float Volume { get; private set; }
-        public bool IsPlaying { get; private set; }
-    }
 }

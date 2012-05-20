@@ -10,14 +10,8 @@ namespace zpd
     {
         static void Main()
         {
+            MediaPlayerManager.EnsureInstance();
             StartService();
-            //_zune = new ZuneApi();
-            //var zuneThread = new Thread(ZuneThread);
-            //zuneThread.Start();
-            //Thread.Sleep(10000);
-            //_zune.ReIndexMusic();
-            //Console.WriteLine(_zune.Search("nine"));
-            Console.ReadLine();
         }
         
         static void StartService()

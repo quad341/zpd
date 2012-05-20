@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using Microsoft.Iris;
@@ -7,7 +8,6 @@ using Microsoft.Zune.Shell;
 using MicrosoftZuneLibrary;
 using MicrosoftZunePlayback;
 using ZuneUI;
-using System.Text;
 using System.Diagnostics;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -169,6 +169,13 @@ namespace VosSoft.ZuneLcd.Api
         /// <value><c>true</c> if fast forwarding is active; otherwise, <c>false</c>.</value>
         /// <seealso cref="FastForwardChanged"/>
         public bool FastForwarding { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether rewinding is currently active.
+        /// </summary>
+        /// <value><c>true</c> if rewinding is active; otherwise, <c>false</c>.</value>
+        /// <seealso cref="FastForwardChanged"/>
+        public bool Rewinding { get; private set; }
 
         /// <summary>
         /// Gets or sets the volume of the Zune player.
@@ -371,6 +378,15 @@ namespace VosSoft.ZuneLcd.Api
         /// </summary>
         /// <seealso cref="FastForwarding"/>
         public event EventHandler FastForwardChanged;
+
+        /// <summary>
+        /// Occurs after the rewind value has changed.
+        /// <para>
+        /// <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+        /// </para>
+        /// </summary>
+        /// <seealso cref="Rewinding"/>
+        public event EventHandler RewindChanged;
 
         /// <summary>
         /// Occurs after the volume of the Zune player has changed.
@@ -631,7 +647,13 @@ namespace VosSoft.ZuneLcd.Api
             }), DeferredInvokePriority.Low); // low priority to save performance
         }
 
-        public String Search(String queryString)
+        /// <summary>
+        /// Given an input (lucene compatable) query, searches for matching tracks with a similar artist, album, or title in the index
+        /// </summary>
+        /// <param name="queryString">The lucene compatible query</param>
+        /// <returns>The list of matching tracks</returns>
+        /// <seealso cref="ReIndexMusic"/>
+        public IEnumerable<SearchTrack> Search(String queryString)
         {
             var query = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_29, new String[]{"artist", "album", "title"}, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29)).Parse(queryString);
             var searcher = new IndexSearcher(IndexReader.Open(new SimpleFSDirectory(new DirectoryInfo(LUCENE_INDEX_DIRECTORY)), true));
@@ -639,13 +661,18 @@ namespace VosSoft.ZuneLcd.Api
             searcher.Search(query, collector);
             var hits = collector.TopDocs().ScoreDocs;
 
-            var result = "";
+            var result = new List<SearchTrack>(hits.Length);
 
             for (var i = 0; i < hits.Length; i++ )
             {
                 var docId = hits[i].Doc;
                 var doc = searcher.Doc(docId);
-                result += doc.GetField("title").StringValue() + " by " + doc.GetField("artist").StringValue() + " on " + doc.GetField("album").StringValue() + ".[Score:" + hits[i].Score + "]\r\n";
+                result.Add(new SearchTrack(Int32.Parse(doc.GetField("mediaId").StringValue()),
+                                           Int32.Parse(doc.GetField("mediaTypeId").StringValue()),
+                                           doc.GetField("title").StringValue(),
+                                           doc.GetField("artist").StringValue(),
+                                           doc.GetField("album").StringValue(),
+                                           float.Parse(doc.GetField("duration").StringValue())));
             }
 
             searcher.Close();
@@ -658,10 +685,10 @@ namespace VosSoft.ZuneLcd.Api
         /// <summary>
         /// Reindexes the music by iterating through all music in the Zune Library and saving it in the local Lucene database. Required for search to work correctly
         /// </summary>
-        /// <seealso cref=" cref="Search"/>
+        /// <seealso cref="Search"/>
         public void ReIndexMusic()
         {
-            ZuneLibrary library = new ZuneLibrary();
+            var library = new ZuneLibrary();
             var dbReloaded = false;
             int returnValue = library.Initialize(null, out dbReloaded);
             if (returnValue >= 0)
@@ -683,12 +710,14 @@ namespace VosSoft.ZuneLcd.Api
 
                             var mediaId = (UInt32)searchResult.GetFieldValue(i, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaID);
                             var mediaTypeId = (UInt32)searchResult.GetFieldValue(i, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaType);
+                            var duration = (float)searchResult.GetFieldValue(i, typeof(float), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Duration);
                             var artist = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_DisplayArtist);
                             var title = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title);
                             var album = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_WMAlbumTitle);
 
                             doc.Add(new Field("mediaId", mediaId.ToString(), Field.Store.YES, Field.Index.NO));
                             doc.Add(new Field("mediaTypeId", mediaTypeId.ToString(), Field.Store.YES, Field.Index.NO));
+                            doc.Add(new Field("duration", duration.ToString(), Field.Store.YES, Field.Index.NO));
                             doc.Add(new Field("artist", artist, Field.Store.YES, Field.Index.ANALYZED));
                             doc.Add(new Field("title", title, Field.Store.YES, Field.Index.ANALYZED));
                             doc.Add(new Field("album", album, Field.Store.YES, Field.Index.ANALYZED));
@@ -715,6 +744,22 @@ namespace VosSoft.ZuneLcd.Api
             {
                 if (!TransportControls.Instance.Fastforwarding.IsDisposed)
                     TransportControls.Instance.Fastforwarding.Value = !TransportControls.Instance.Fastforwarding.Value;
+            }), DeferredInvokePriority.Normal);
+        }
+
+        /// <summary>
+        /// Toggles the rewind value.
+        /// </summary>
+        /// <seealso cref="FastForwarding"/>
+        public void ToggleRewind()
+        {
+            if (!IsReady || TrackState != TrackState.Playing)
+                return;
+
+            Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
+            {
+                if (!TransportControls.Instance.Fastforwarding.IsDisposed)
+                    TransportControls.Instance.Rewinding.Value = !TransportControls.Instance.Rewinding.Value;
             }), DeferredInvokePriority.Normal);
         }
 
@@ -788,6 +833,19 @@ namespace VosSoft.ZuneLcd.Api
             }), DeferredInvokePriority.Normal);
         }
 
+
+
+        [CLSCompliant(false)]
+        public void AddTrackToCurrentPlaylistAtIndex(int mediaId, MediaType mediaType, int index)
+        {
+            // create a list of tracks to append
+            var track = new LibraryPlaybackTrack(mediaId, mediaType, null);
+            Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
+            {
+                TransportControls.Instance.CurrentPlaylist.Insert(index, track);
+            }), DeferredInvokePriority.Normal);
+        }
+
         public void RemoveTrackAtIndexFromCurrentPlaylist(int index)
         {
             if (index < 0 || index >= TrackCount)
@@ -811,12 +869,13 @@ namespace VosSoft.ZuneLcd.Api
         }
 
         [CLSCompliant(false)]
-        public static MediaType MediaTypeFromUint(uint mediaTypeId)
+        public static MediaType MediaTypeFromInt(int mediaTypeId)
         {
             var mt = (MediaType)mediaTypeId;
 #if DEBUG
             var mtDebug = MediaType.Undefined;
-            switch (mediaTypeId)
+            var uMediaTypeId = Convert.ToUInt32(mediaTypeId);
+            switch (uMediaTypeId)
             {
                 case 3:
                     mtDebug = MediaType.Track;
@@ -980,6 +1039,7 @@ namespace VosSoft.ZuneLcd.Api
             shuffling = TransportControls.Instance.Shuffling.Value;
 
             TransportControls.Instance.Fastforwarding.ChosenChanged += new EventHandler(Fastforwarding_ChosenChanged);
+            TransportControls.Instance.Rewinding.ChosenChanged += new EventHandler(Rewinding_ChosenChanged);
             TransportControls.Instance.Volume.PropertyChanged += new PropertyChangedEventHandler(Volume_PropertyChanged);
 
             TransportControls.Instance.Muted.ChosenChanged += new EventHandler(Muted_ChosenChanged);
@@ -1064,6 +1124,19 @@ namespace VosSoft.ZuneLcd.Api
 
             if (FastForwardChanged != null)
                 FastForwardChanged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Handles the ChosenChanged event of the Rewinding control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void Rewinding_ChosenChanged(object sender, EventArgs e)
+        {
+            Rewinding = TransportControls.Instance.Rewinding.Value;
+
+            if (RewindChanged != null)
+                RewindChanged(this, EventArgs.Empty);
         }
 
         /// <summary>

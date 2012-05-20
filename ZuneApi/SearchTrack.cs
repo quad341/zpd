@@ -1,13 +1,8 @@
-using System;
-using VosSoft.ZuneLcd.Api;
-
-namespace zpd
+﻿namespace VosSoft.ZuneLcd.Api
 {
-    /// <summary>
-    /// Container class for track information
-    /// </summary>
-    public class ZpdTrack : IEquatable<ZpdTrack>
+    public class SearchTrack
     {
+        
         public int MediaId { get; private set; }
         public int MediaTypeId { get; private set; }
         public string Artist { get; set; }
@@ -15,13 +10,13 @@ namespace zpd
         public string Name { get; set; }
         public float Duration { get; set; }
 
-        public ZpdTrack (int mediaId, int mediaTypeId)
+        public SearchTrack (int mediaId, int mediaTypeId)
         {
             MediaId = mediaId;
             MediaTypeId = mediaTypeId;
         }
 
-        public ZpdTrack(int mediaId, int mediaTypeId, string name, string artist, string album, float duration)
+        public SearchTrack(int mediaId, int mediaTypeId, string name, string artist, string album, float duration)
             : this(mediaId, mediaTypeId)
         {
             Name = name;
@@ -30,14 +25,9 @@ namespace zpd
             Duration = duration;
         }
 
-        public ZpdTrack(SearchTrack track)
-            : this(track.MediaId, track.MediaTypeId, track.Name, track.Artist, track.Album, track.Duration)
-        {
-        }
-
-        public bool Equals(ZpdTrack other)
+        public bool Equals(SearchTrack other)
         {
             return MediaId == other.MediaId;
-        }
+        } 
     }
 }
