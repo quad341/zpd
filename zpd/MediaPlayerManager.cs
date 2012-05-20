@@ -130,15 +130,7 @@ namespace zpd
         {
             lock(this)
             {
-                var searchTracks = _zune.Search(query);
-                // need to convert the search tracks to ZpdTracks
-                var zpdTracks = new List<ZpdTrack>();
-                foreach (var track in searchTracks)
-                {
-                    zpdTracks.Add(new ZpdTrack(track));
-                }
-
-                return zpdTracks;
+                return  ConvertSearchTracksToZpdTracks(_zune.Search(query));
             }
         }
 
@@ -177,8 +169,8 @@ namespace zpd
                                      _zune.CurrentTrack.Title,
                                      _zune.CurrentTrack.Artist,
                                      _zune.CurrentTrack.Album,
-                                     Convert.ToSingle(_zune.CurrentTrack.Duration.TotalSeconds)),
-                        Convert.ToSingle(_zune.CurrentTrack.Position.TotalSeconds),
+                                     Convert.ToInt32(_zune.CurrentTrack.Duration.TotalSeconds)),
+                        _zune.GetCurrentTrackPositionSynchronous(),
                         _zune.Volume,
                         _zune.TrackState == TrackState.Playing);
             }
@@ -186,7 +178,12 @@ namespace zpd
 
         public IEnumerable<ZpdTrack> GetCurrentQueue()
         {
-            throw new NotImplementedException();
+            lock(this)
+            {
+                return
+                    ConvertSearchTracksToZpdTracks(_zune.GetTracksAsSearchTrackSynchronous(0 /*startIndex*/, 0
+                                                       /*count, 0=all*/));
+            }
         }
 
         public static void ClosePlayer()
@@ -217,6 +214,17 @@ namespace zpd
         private void ZuneThread()
         {
             _zune.Launch();
+        }
+
+        private static IEnumerable<ZpdTrack> ConvertSearchTracksToZpdTracks(IEnumerable<SearchTrack> tracks)
+        {
+            var searchTracks = new List<ZpdTrack>();
+            foreach (var track in tracks)
+            {
+                searchTracks.Add(new ZpdTrack(track));
+            }
+
+            return searchTracks;
         }
     }
 }

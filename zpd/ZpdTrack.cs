@@ -13,7 +13,7 @@ namespace zpd
         public string Artist { get; set; }
         public string Album { get; set; }
         public string Name { get; set; }
-        public float Duration { get; set; }
+        public int Duration { get; set; }
 
         public ZpdTrack (int mediaId, int mediaTypeId)
         {
@@ -21,7 +21,7 @@ namespace zpd
             MediaTypeId = mediaTypeId;
         }
 
-        public ZpdTrack(int mediaId, int mediaTypeId, string name, string artist, string album, float duration)
+        public ZpdTrack(int mediaId, int mediaTypeId, string name, string artist, string album, int duration)
             : this(mediaId, mediaTypeId)
         {
             Name = name;

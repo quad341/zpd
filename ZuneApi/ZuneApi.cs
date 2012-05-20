@@ -648,6 +648,59 @@ namespace VosSoft.ZuneLcd.Api
         }
 
         /// <summary>
+        /// Context used to get the tracks synchronously
+        /// <seealso cref="GetTracksSynchronous"/>
+        /// </summary>
+        private class GetTracksSynchronousContext
+        {
+            private readonly AutoResetEvent _auto;
+
+            public IEnumerable<Track> Tracks { get; private set; }
+
+            public GetTracksSynchronousContext(AutoResetEvent auto)
+            {
+                _auto = auto;
+            }
+
+            public void Callback(IEnumerable<Track> tracks)
+            {
+                Tracks = tracks;
+                _auto.Set();
+            }
+        }
+
+        /// <summary>
+        /// Synchronous version of GetTracks
+        /// </summary>
+        /// <see cref="GetTracks"/>
+        /// <param name="startIndex">The start index of the current track list.</param>
+        /// <param name="count">The track count (0 for all tracks).</param>
+        /// <returns>An enumerable list of the current tracks</returns>
+        public IEnumerable<Track> GetTracksSynchronous(int startIndex, int count)
+        {
+            var autoResetEvent = new AutoResetEvent(false);
+            var ctx = new GetTracksSynchronousContext(autoResetEvent);
+
+            GetTracks(startIndex, count, ctx.Callback);
+            autoResetEvent.WaitOne();
+
+            return ctx.Tracks;
+        }
+
+        public IEnumerable<SearchTrack> GetTracksAsSearchTrackSynchronous(int startIndex, int count)
+        {
+            var tracks = GetTracksSynchronous(startIndex, count);
+
+            var searchTrack = new List<SearchTrack>();
+            foreach (var track in tracks)
+            {
+                searchTrack.Add(new SearchTrack(track));
+            }
+
+            return searchTrack;
+        }
+
+        /// <summary>
         /// Given an input (lucene compatable) query, searches for matching tracks with a similar artist, album, or title in the index
         /// </summary>
         /// <param name="queryString">The lucene compatible query</param>
@@ -672,7 +725,7 @@ namespace VosSoft.ZuneLcd.Api
                                            doc.GetField("title").StringValue(),
                                            doc.GetField("artist").StringValue(),
                                            doc.GetField("album").StringValue(),
-                                           float.Parse(doc.GetField("duration").StringValue())));
+                                           Int32.Parse(doc.GetField("duration").StringValue())));
             }
 
             searcher.Close();
@@ -710,7 +763,7 @@ namespace VosSoft.ZuneLcd.Api
 
                             var mediaId = (UInt32)searchResult.GetFieldValue(i, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaID);
                             var mediaTypeId = (UInt32)searchResult.GetFieldValue(i, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_MediaType);
-                            var duration = (float)searchResult.GetFieldValue(i, typeof(float), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Duration);
+                            var duration = (UInt32)searchResult.GetFieldValue(i, typeof(UInt32), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Duration);
                             var artist = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_DisplayArtist);
                             var title = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_Title);
                             var album = (String)searchResult.GetFieldValue(i, typeof(String), (uint)MicrosoftZuneLibrary.SchemaMap.kiIndex_WMAlbumTitle);
@@ -866,6 +919,41 @@ namespace VosSoft.ZuneLcd.Api
             {
                 callback(TransportControls.Instance.CurrentTrackPosition);
             }), DeferredInvokePriority.Normal);
+        }
+
+        /// <summary>
+        /// Internal class to allow essentially synchronous calling of GetCurrentTrackPositionSynchronous
+        /// <seealso cref="GetCurrentTrackPositionSynchronous"/>
+        /// </summary>
+        private class CurrentTrackPositionSyncContext
+        {
+            private readonly AutoResetEvent _auto;
+
+            public float Position { get; private set; }
+
+            public CurrentTrackPositionSyncContext(AutoResetEvent auto)
+            {
+                Position = 0;
+                _auto = auto;
+            }
+
+            public void Callback(float position)
+            {
+                Position = position;
+                _auto.Set();
+            }
+        }
+
+        public float GetCurrentTrackPositionSynchronous()
+        {
+            // We will need to let the callback get called before we are back
+            var autoResetEvent = new AutoResetEvent(false);
+            var ctx = new CurrentTrackPositionSyncContext(autoResetEvent);
+
+            GetCurrentTrackPosition(ctx.Callback);
+            autoResetEvent.WaitOne();
+
+            return ctx.Position;
         }
 
         [CLSCompliant(false)]
