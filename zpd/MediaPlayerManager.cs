@@ -15,7 +15,7 @@ namespace zpd
         private readonly Thread _zuneThread;
         private static MediaPlayerManager _instance;
 
-        static MediaPlayerManager Instance
+        public static MediaPlayerManager Instance
         {
             get
             {

@@ -27,6 +27,7 @@ namespace zpd
                 Console.WriteLine("Service is ready. Press <ENTER> to terminate");
                 Console.ReadLine();
                 host.Close();
+                MediaPlayerManager.ClosePlayer();
             }
             catch (CommunicationException ce)
             {
