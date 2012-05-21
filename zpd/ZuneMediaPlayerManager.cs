@@ -9,31 +9,31 @@ namespace zpd
     /// <summary>
     /// Singleton management class for actually preforming media player operations
     /// </summary>
-    public class MediaPlayerManager
+    public class ZuneMediaPlayerManager : IMediaPlayerManager
     {
         private readonly ZuneApi _zune;
         private readonly Thread _zuneThread;
-        private static MediaPlayerManager _instance;
+        private static ZuneMediaPlayerManager _instance;
 
-        public static MediaPlayerManager Instance
+        public static ZuneMediaPlayerManager Instance
         {
             get
             {
-                // Because the service should not be available until after EnsureInstance() returns, we are
-                // not locking here. Also, this is likely to be called a lot and we don't want to pay the cost here.
-                // We do have to pay the locking cost for individual calls though.
-                Debug.Assert(null != _instance, "EnsureInstance should have already been called");
-                return _instance;
+                lock (typeof(ZuneMediaPlayerManager))
+                {
+                    Debug.Assert(null != _instance, "EnsureInstance should have already been called and this should not be closed");
+                    return _instance;
+                }
             }
         }
 
         public static void EnsureInstance()
         {
-            lock(typeof(MediaPlayerManager))
+            lock(typeof(ZuneMediaPlayerManager))
             {
                 if (null == _instance)
                 {
-                    _instance = new MediaPlayerManager();
+                    _instance = new ZuneMediaPlayerManager();
                 }
             }
         }
@@ -188,7 +188,7 @@ namespace zpd
 
         public static void ClosePlayer()
         {
-            lock(typeof(MediaPlayerManager))
+            lock(typeof(ZuneMediaPlayerManager))
             {
                 if (null != _instance)
                 {
@@ -199,7 +199,7 @@ namespace zpd
             }
         }
 
-        private MediaPlayerManager()
+        private ZuneMediaPlayerManager()
         {
             _zune = new ZuneApi();
             _zuneThread = new Thread(ZuneThread);

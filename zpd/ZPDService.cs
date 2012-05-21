@@ -1,98 +1,139 @@
-using System;
 using System.Collections.Generic;
 
 namespace zpd
 {
     class ZPDService : IZPDService
     {
-        public void Play()
+        public void Play(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.Play();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.Play();
+            }
         }
 
-        public void Pause()
+        public void Pause(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.Play();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.Play();
+            }
         }
 
-        public void ClosePlayer()
+        public void ClosePlayer(AuthPacket authPacket)
         {
-            MediaPlayerManager.ClosePlayer();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.ClosePlayer();
+            }
         }
 
-        public void PlaySongIndex(int index)
+        public void PlaySongIndex(AuthPacket authPacket, int index)
         {
-            MediaPlayerManager.Instance.PlaySongIndex(index);
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.PlaySongIndex(index);
+            }
         }
 
-        public void Stop()
+        public void Stop(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.Stop();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.Stop();
+            }
         }
 
-        public void NextTrack()
+        public void NextTrack(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.NextTrack();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.NextTrack();
+            }
         }
 
-        public void PreviousTrack()
+        public void PreviousTrack(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.PreviousTrack();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.PreviousTrack();
+            }
         }
 
-        public void ToggleFastForward()
+        public void ToggleFastForward(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.ToggleFastForward();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.ToggleFastForward();
+            }
         }
 
-        public void ToggleRewind()
+        public void ToggleRewind(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.ToggleRewind();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.ToggleRewind();
+            }
         }
 
-        public void ToggleShuffle()
+        public void ToggleShuffle(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.ToggleShuffle();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.ToggleShuffle();
+            }
         }
 
-        public void ToggleRepeat()
+        public void ToggleRepeat(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.ToggleRepeat();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.ToggleRepeat();
+            }
         }
 
-        public void ReIndexLibrary()
+        public void ReIndexLibrary(AuthPacket authPacket)
         {
-            MediaPlayerManager.Instance.ReIndexLibrary();
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.ReIndexLibrary();
+            }
         }
 
         public IEnumerable<ZpdTrack> Search(string searchTerm)
         {
-            return MediaPlayerManager.Instance.Search(searchTerm);
+            return ZuneMediaPlayerManager.Instance.Search(searchTerm);
         }
 
         public void QueueTrack(int mediaId, int mediaTypeId)
         {
-            MediaPlayerManager.Instance.QueueTrack(mediaId, mediaTypeId);
+            ZuneMediaPlayerManager.Instance.QueueTrack(mediaId, mediaTypeId);
         }
 
-        public void QueueTrackAtIndex(int mediaId, int mediaTypeId, int index)
+        public void QueueTrackAtIndex(AuthPacket authPacket, int mediaId, int mediaTypeId, int index)
         {
-            MediaPlayerManager.Instance.QueueTrackAtIndex(mediaId, mediaTypeId, index);
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.QueueTrackAtIndex(mediaId, mediaTypeId, index);
+            }
         }
 
-        public void RemoveTrackAtIndex(int index)
+        public void RemoveTrackAtIndex(AuthPacket authPacket, int index)
         {
-            MediaPlayerManager.Instance.RemoveTrackAtIndex(index);
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.RemoveTrackAtIndex(index);
+            }
         }
 
         public ZpdCurrentPlayerState GetCurrentPlayerState()
         {
-            return MediaPlayerManager.Instance.GetCurrentPlayerState();
+            return ZuneMediaPlayerManager.Instance.GetCurrentPlayerState();
         }
 
         public IEnumerable<ZpdTrack> GetCurrentQueue()
         {
-            return MediaPlayerManager.Instance.GetCurrentQueue();
+            return ZuneMediaPlayerManager.Instance.GetCurrentQueue();
         }
     }
 }

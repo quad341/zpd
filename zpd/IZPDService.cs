@@ -9,37 +9,37 @@ namespace zpd
     public interface IZPDService
     {
         [OperationContract]
-        void Play();
+        void Play(AuthPacket authPacket);
 
         [OperationContract]
-        void PlaySongIndex(int index);
+        void PlaySongIndex(AuthPacket authPacket, int index);
 
         [OperationContract]
-        void Pause();
+        void Pause(AuthPacket authPacket);
 
         [OperationContract]
-        void Stop();
+        void Stop(AuthPacket authPacket);
 
         [OperationContract]
-        void NextTrack();
+        void NextTrack(AuthPacket authPacket);
 
         [OperationContract]
-        void PreviousTrack();
+        void PreviousTrack(AuthPacket authPacket);
 
         [OperationContract]
-        void ToggleFastForward();
+        void ToggleFastForward(AuthPacket authPacket);
 
         [OperationContract]
-        void ToggleRewind();
+        void ToggleRewind(AuthPacket authPacket);
 
         [OperationContract]
-        void ToggleShuffle();
+        void ToggleShuffle(AuthPacket authPacket);
 
         [OperationContract]
-        void ToggleRepeat();
+        void ToggleRepeat(AuthPacket authPacket);
 
         [OperationContract]
-        void ReIndexLibrary();
+        void ReIndexLibrary(AuthPacket authPacket);
 
         [OperationContract]
         IEnumerable<ZpdTrack> Search(string searchTerm);
@@ -48,10 +48,10 @@ namespace zpd
         void QueueTrack(int mediaId, int mediaTypeId);
 
         [OperationContract]
-        void QueueTrackAtIndex(int mediaId, int mediaTypeId, int index);
+        void QueueTrackAtIndex(AuthPacket authPacket, int mediaId, int mediaTypeId, int index);
 
         [OperationContract]
-        void RemoveTrackAtIndex(int index);
+        void RemoveTrackAtIndex(AuthPacket authPacket, int index);
 
         [OperationContract]
         ZpdCurrentPlayerState GetCurrentPlayerState();
@@ -60,6 +60,6 @@ namespace zpd
         IEnumerable<ZpdTrack> GetCurrentQueue();
 
         [OperationContract]
-        void ClosePlayer();
+        void ClosePlayer(AuthPacket authPacket);
     }
 }

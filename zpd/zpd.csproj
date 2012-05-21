@@ -71,8 +71,12 @@
     <Reference Include="ZuneShell, Version=4.7.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthPacket.cs" />
+    <Compile Include="IMediaPlayerManager.cs" />
     <Compile Include="IZPDService.cs" />
-    <Compile Include="MediaPlayerManager.cs" />
+    <Compile Include="AuthTolkenTimeout.cs" />
+    <Compile Include="TolkenAuthenticator.cs" />
+    <Compile Include="ZuneMediaPlayerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZpdCurrentPlayerState.cs" />

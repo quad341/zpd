@@ -10,7 +10,9 @@ namespace zpd
     {
         static void Main()
         {
-            MediaPlayerManager.EnsureInstance();
+            ZuneMediaPlayerManager.EnsureInstance();
+            TolkenAuthenticator.Init(AuthTolkenTimeout.FiveSeconds);
+            Console.WriteLine("Auth tolken is: {0}", TolkenAuthenticator.AuthString);
             StartService();
         }
         
@@ -27,7 +29,7 @@ namespace zpd
                 Console.WriteLine("Service is ready. Press <ENTER> to terminate");
                 Console.ReadLine();
                 host.Close();
-                MediaPlayerManager.ClosePlayer();
+                ZuneMediaPlayerManager.ClosePlayer();
             }
             catch (CommunicationException ce)
             {
