@@ -8,6 +8,293 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+namespace zpd
+{
+    using System.Runtime.Serialization;
+    
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AuthPacket", Namespace="http://schemas.datacontract.org/2004/07/zpd")]
+    public partial class AuthPacket : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string AuthTolkenField;
+        
+        private int OffsetField;
+        
+        private zpd.AuthTolkenTimeout TimeoutField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AuthTolken
+        {
+            get
+            {
+                return this.AuthTolkenField;
+            }
+            set
+            {
+                this.AuthTolkenField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Offset
+        {
+            get
+            {
+                return this.OffsetField;
+            }
+            set
+            {
+                this.OffsetField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public zpd.AuthTolkenTimeout Timeout
+        {
+            get
+            {
+                return this.TimeoutField;
+            }
+            set
+            {
+                this.TimeoutField = value;
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AuthTolkenTimeout", Namespace="http://schemas.datacontract.org/2004/07/zpd")]
+    public enum AuthTolkenTimeout : int
+    {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Unset = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Any = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        FiveSeconds = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        TenSecionds = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ThirtySeconds = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NoAuth = 5,
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ZpdTrack", Namespace="http://schemas.datacontract.org/2004/07/zpd")]
+    public partial class ZpdTrack : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string AlbumField;
+        
+        private string ArtistField;
+        
+        private int DurationField;
+        
+        private int MediaIdField;
+        
+        private int MediaTypeIdField;
+        
+        private string NameField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Album
+        {
+            get
+            {
+                return this.AlbumField;
+            }
+            set
+            {
+                this.AlbumField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Artist
+        {
+            get
+            {
+                return this.ArtistField;
+            }
+            set
+            {
+                this.ArtistField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Duration
+        {
+            get
+            {
+                return this.DurationField;
+            }
+            set
+            {
+                this.DurationField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int MediaId
+        {
+            get
+            {
+                return this.MediaIdField;
+            }
+            set
+            {
+                this.MediaIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int MediaTypeId
+        {
+            get
+            {
+                return this.MediaTypeIdField;
+            }
+            set
+            {
+                this.MediaTypeIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name
+        {
+            get
+            {
+                return this.NameField;
+            }
+            set
+            {
+                this.NameField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ZpdCurrentPlayerState", Namespace="http://schemas.datacontract.org/2004/07/zpd")]
+    public partial class ZpdCurrentPlayerState : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private zpd.ZpdTrack CurrentTrackField;
+        
+        private float CurrentTrackPositionField;
+        
+        private bool IsPlayingField;
+        
+        private float VolumeField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public zpd.ZpdTrack CurrentTrack
+        {
+            get
+            {
+                return this.CurrentTrackField;
+            }
+            set
+            {
+                this.CurrentTrackField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public float CurrentTrackPosition
+        {
+            get
+            {
+                return this.CurrentTrackPositionField;
+            }
+            set
+            {
+                this.CurrentTrackPositionField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsPlaying
+        {
+            get
+            {
+                return this.IsPlayingField;
+            }
+            set
+            {
+                this.IsPlayingField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public float Volume
+        {
+            get
+            {
+                return this.VolumeField;
+            }
+            set
+            {
+                this.VolumeField = value;
+            }
+        }
+    }
+}
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -16,13 +303,58 @@ public interface IZPDService
 {
     
     [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/Play", ReplyAction="http://zpd/IZPDService/PlayResponse")]
-    void Play();
+    void Play(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/PlaySongIndex", ReplyAction="http://zpd/IZPDService/PlaySongIndexResponse")]
+    void PlaySongIndex(zpd.AuthPacket authPacket, int index);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/Pause", ReplyAction="http://zpd/IZPDService/PauseResponse")]
-    void Pause();
+    void Pause(zpd.AuthPacket authPacket);
     
-    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/Close", ReplyAction="http://zpd/IZPDService/CloseResponse")]
-    void Close();
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/Stop", ReplyAction="http://zpd/IZPDService/StopResponse")]
+    void Stop(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/NextTrack", ReplyAction="http://zpd/IZPDService/NextTrackResponse")]
+    void NextTrack(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/PreviousTrack", ReplyAction="http://zpd/IZPDService/PreviousTrackResponse")]
+    void PreviousTrack(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/ToggleFastForward", ReplyAction="http://zpd/IZPDService/ToggleFastForwardResponse")]
+    void ToggleFastForward(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/ToggleRewind", ReplyAction="http://zpd/IZPDService/ToggleRewindResponse")]
+    void ToggleRewind(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/ToggleShuffle", ReplyAction="http://zpd/IZPDService/ToggleShuffleResponse")]
+    void ToggleShuffle(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/ToggleRepeat", ReplyAction="http://zpd/IZPDService/ToggleRepeatResponse")]
+    void ToggleRepeat(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/ReIndexLibrary", ReplyAction="http://zpd/IZPDService/ReIndexLibraryResponse")]
+    void ReIndexLibrary(zpd.AuthPacket authPacket);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/Search", ReplyAction="http://zpd/IZPDService/SearchResponse")]
+    zpd.ZpdTrack[] Search(string searchTerm);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/QueueTrack", ReplyAction="http://zpd/IZPDService/QueueTrackResponse")]
+    void QueueTrack(int mediaId, int mediaTypeId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/QueueTrackAtIndex", ReplyAction="http://zpd/IZPDService/QueueTrackAtIndexResponse")]
+    void QueueTrackAtIndex(zpd.AuthPacket authPacket, int mediaId, int mediaTypeId, int index);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/RemoveTrackAtIndex", ReplyAction="http://zpd/IZPDService/RemoveTrackAtIndexResponse")]
+    void RemoveTrackAtIndex(zpd.AuthPacket authPacket, int index);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/GetCurrentPlayerState", ReplyAction="http://zpd/IZPDService/GetCurrentPlayerStateResponse")]
+    zpd.ZpdCurrentPlayerState GetCurrentPlayerState();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/GetCurrentQueue", ReplyAction="http://zpd/IZPDService/GetCurrentQueueResponse")]
+    zpd.ZpdTrack[] GetCurrentQueue();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://zpd/IZPDService/ClosePlayer", ReplyAction="http://zpd/IZPDService/ClosePlayerResponse")]
+    void ClosePlayer(zpd.AuthPacket authPacket);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -59,18 +391,93 @@ public partial class ZPDServiceClient : System.ServiceModel.ClientBase<IZPDServi
     {
     }
     
-    public void Play()
+    public void Play(zpd.AuthPacket authPacket)
     {
-        base.Channel.Play();
+        base.Channel.Play(authPacket);
     }
     
-    public void Pause()
+    public void PlaySongIndex(zpd.AuthPacket authPacket, int index)
     {
-        base.Channel.Pause();
+        base.Channel.PlaySongIndex(authPacket, index);
     }
     
-    public void Close()
+    public void Pause(zpd.AuthPacket authPacket)
     {
-        base.Channel.Close();
+        base.Channel.Pause(authPacket);
+    }
+    
+    public void Stop(zpd.AuthPacket authPacket)
+    {
+        base.Channel.Stop(authPacket);
+    }
+    
+    public void NextTrack(zpd.AuthPacket authPacket)
+    {
+        base.Channel.NextTrack(authPacket);
+    }
+    
+    public void PreviousTrack(zpd.AuthPacket authPacket)
+    {
+        base.Channel.PreviousTrack(authPacket);
+    }
+    
+    public void ToggleFastForward(zpd.AuthPacket authPacket)
+    {
+        base.Channel.ToggleFastForward(authPacket);
+    }
+    
+    public void ToggleRewind(zpd.AuthPacket authPacket)
+    {
+        base.Channel.ToggleRewind(authPacket);
+    }
+    
+    public void ToggleShuffle(zpd.AuthPacket authPacket)
+    {
+        base.Channel.ToggleShuffle(authPacket);
+    }
+    
+    public void ToggleRepeat(zpd.AuthPacket authPacket)
+    {
+        base.Channel.ToggleRepeat(authPacket);
+    }
+    
+    public void ReIndexLibrary(zpd.AuthPacket authPacket)
+    {
+        base.Channel.ReIndexLibrary(authPacket);
+    }
+    
+    public zpd.ZpdTrack[] Search(string searchTerm)
+    {
+        return base.Channel.Search(searchTerm);
+    }
+    
+    public void QueueTrack(int mediaId, int mediaTypeId)
+    {
+        base.Channel.QueueTrack(mediaId, mediaTypeId);
+    }
+    
+    public void QueueTrackAtIndex(zpd.AuthPacket authPacket, int mediaId, int mediaTypeId, int index)
+    {
+        base.Channel.QueueTrackAtIndex(authPacket, mediaId, mediaTypeId, index);
+    }
+    
+    public void RemoveTrackAtIndex(zpd.AuthPacket authPacket, int index)
+    {
+        base.Channel.RemoveTrackAtIndex(authPacket, index);
+    }
+    
+    public zpd.ZpdCurrentPlayerState GetCurrentPlayerState()
+    {
+        return base.Channel.GetCurrentPlayerState();
+    }
+    
+    public zpd.ZpdTrack[] GetCurrentQueue()
+    {
+        return base.Channel.GetCurrentQueue();
+    }
+    
+    public void ClosePlayer(zpd.AuthPacket authPacket)
+    {
+        base.Channel.ClosePlayer(authPacket);
     }
 }

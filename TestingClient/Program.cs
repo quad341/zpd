@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
 
 namespace TestingClient
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var client = new ZPDServiceClient();
-            client.Play();
-            Console.WriteLine("Should be playing; waits 10 seconds to ensure player is open though");
+            var tracks = client.Search("nine");
+            foreach (var track in tracks)
+            {
+                Console.WriteLine("We found {0} by {1} on {2}", track.Name, track.Artist, track.Album);
+            }
             Console.WriteLine("Press <enter> to close player and client");
             Console.ReadLine();
             client.Close();
