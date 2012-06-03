@@ -100,8 +100,8 @@ namespace zpd
         // Taken from http://dotnetpulse.blogspot.com/2007/12/sha1-hash-calculation-in-c.html
         private static string Sha1HashOfString(string input)
         {
-            var buffer = Encoding.ASCII.GetBytes(input);
-            var crypto = new SHA1CryptoServiceProvider();
+            var buffer = Encoding.Unicode.GetBytes(input);
+            var crypto = new SHA256Managed();
 
             return BitConverter.ToString(crypto.ComputeHash(buffer)).Replace("-", "");
         }

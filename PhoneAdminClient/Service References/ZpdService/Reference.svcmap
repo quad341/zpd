@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9cab2845-c4e0-4adb-98bf-897897a8696c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8000/zpd" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ZPDService.wsdl" MetadataType="Wsdl" ID="6d49945d-f5f1-462c-9931-693f5edcdd67" SourceId="1" SourceUrl="http://localhost:8000/zpd?wsdl" />
+    <MetadataFile FileName="zpd.disco" MetadataType="Disco" ID="1bee7305-ceda-49ed-a25b-bb408e0e4eba" SourceId="1" SourceUrl="http://localhost:8000/zpd?disco" />
+    <MetadataFile FileName="zpd.xsd" MetadataType="Schema" ID="58e5afb5-68e1-433f-9ba7-f69ab8d4c047" SourceId="1" SourceUrl="http://localhost:8000/zpd?xsd=xsd1" />
+    <MetadataFile FileName="zpd1.xsd" MetadataType="Schema" ID="e8befdab-5b49-4f89-ba2a-59ecc6896e00" SourceId="1" SourceUrl="http://localhost:8000/zpd?xsd=xsd0" />
+    <MetadataFile FileName="zpd.wsdl" MetadataType="Wsdl" ID="802352fb-3ade-4e40-810f-d5cae6325110" SourceId="1" SourceUrl="http://localhost:8000/zpd?wsdl=wsdl0" />
+    <MetadataFile FileName="zpd2.xsd" MetadataType="Schema" ID="be677142-c3c6-43b4-ad40-1cd08f82a679" SourceId="1" SourceUrl="http://localhost:8000/zpd?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
