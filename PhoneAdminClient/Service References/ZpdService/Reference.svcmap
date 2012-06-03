@@ -20,15 +20,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8000/zpd" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://10.0.0.3:8000/zpd" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ZPDService.wsdl" MetadataType="Wsdl" ID="6d49945d-f5f1-462c-9931-693f5edcdd67" SourceId="1" SourceUrl="http://localhost:8000/zpd?wsdl" />
-    <MetadataFile FileName="zpd.disco" MetadataType="Disco" ID="1bee7305-ceda-49ed-a25b-bb408e0e4eba" SourceId="1" SourceUrl="http://localhost:8000/zpd?disco" />
-    <MetadataFile FileName="zpd.xsd" MetadataType="Schema" ID="58e5afb5-68e1-433f-9ba7-f69ab8d4c047" SourceId="1" SourceUrl="http://localhost:8000/zpd?xsd=xsd1" />
-    <MetadataFile FileName="zpd1.xsd" MetadataType="Schema" ID="e8befdab-5b49-4f89-ba2a-59ecc6896e00" SourceId="1" SourceUrl="http://localhost:8000/zpd?xsd=xsd0" />
-    <MetadataFile FileName="zpd.wsdl" MetadataType="Wsdl" ID="802352fb-3ade-4e40-810f-d5cae6325110" SourceId="1" SourceUrl="http://localhost:8000/zpd?wsdl=wsdl0" />
-    <MetadataFile FileName="zpd2.xsd" MetadataType="Schema" ID="be677142-c3c6-43b4-ad40-1cd08f82a679" SourceId="1" SourceUrl="http://localhost:8000/zpd?xsd=xsd2" />
+    <MetadataFile FileName="zpd3.xsd" MetadataType="Schema" ID="59757031-2d5c-4508-bd79-8871fb1ad917" SourceId="1" SourceUrl="http://10.0.0.3:8000/zpd?xsd=xsd0" />
+    <MetadataFile FileName="zpd31.xsd" MetadataType="Schema" ID="a0e23658-4a05-4b71-b0a4-cdf34d31e4db" SourceId="1" SourceUrl="http://10.0.0.3:8000/zpd?xsd=xsd1" />
+    <MetadataFile FileName="zpd32.xsd" MetadataType="Schema" ID="b589baac-18db-4daa-a4a8-6a77b79bd858" SourceId="1" SourceUrl="http://10.0.0.3:8000/zpd?xsd=xsd2" />
+    <MetadataFile FileName="zpd1.wsdl" MetadataType="Wsdl" ID="dc415b03-cec2-42ab-bfa5-fccc38860d4d" SourceId="1" SourceUrl="http://10.0.0.3:8000/zpd?wsdl=wsdl0" />
+    <MetadataFile FileName="ZPDService1.wsdl" MetadataType="Wsdl" ID="a87ae3b4-f9b1-4104-8599-f34e11f12aab" SourceId="1" SourceUrl="http://10.0.0.3:8000/zpd?wsdl" />
+    <MetadataFile FileName="zpd1.disco" MetadataType="Disco" ID="cc5652dd-7942-4830-89a0-ee5a5aafe3cc" SourceId="1" SourceUrl="http://10.0.0.3:8000/zpd?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

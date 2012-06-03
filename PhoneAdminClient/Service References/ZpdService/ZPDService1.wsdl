@@ -780,7 +780,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsdl:import namespace="http://zpd" location="http://localhost:8000/zpd?wsdl=wsdl0" />
+  <wsdl:import namespace="http://zpd" location="http://10.0.0.3:8000/zpd?wsdl=wsdl0" />
   <wsdl:types />
   <wsdl:binding name="WSHttpBinding_IZPDService" type="i0:IZPDService">
     <wsp:PolicyReference URI="#WSHttpBinding_IZPDService_policy" />
@@ -986,9 +986,9 @@
   </wsdl:binding>
   <wsdl:service name="ZPDService">
     <wsdl:port name="WSHttpBinding_IZPDService" binding="tns:WSHttpBinding_IZPDService">
-      <soap12:address location="http://localhost:8000/zpd/Service" />
+      <soap12:address location="http://10.0.0.3:8000/zpd/Service" />
       <wsa10:EndpointReference>
-        <wsa10:Address>http://localhost:8000/zpd/Service</wsa10:Address>
+        <wsa10:Address>http://10.0.0.3:8000/zpd/Service</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
           <Upn>phoenix\jim</Upn>
         </Identity>

@@ -27,7 +27,7 @@ namespace zpd
             var host = new ServiceHost(typeof(ZPDService), baseAddress);
             try
             {
-                host.AddServiceEndpoint(typeof(IZPDService), new WSHttpBinding(), "Service");
+                //host.AddServiceEndpoint(typeof(IZPDService), new WSHttpBinding(), "Service");
                 var smb = new ServiceMetadataBehavior { HttpGetEnabled = true };
                 host.Description.Behaviors.Add(smb);
                 host.Open();

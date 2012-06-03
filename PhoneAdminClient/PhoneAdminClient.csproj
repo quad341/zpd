@@ -92,18 +92,19 @@
     <None Include="Service References\ZpdService\PhoneAdminClient.ZpdService.ZpdTrack.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ZpdService\zpd.wsdl" />
-    <None Include="Service References\ZpdService\zpd.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ZpdService\zpd1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ZpdService\zpd2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ZpdService\ZPDService.wsdl" />
+    <None Include="Service References\ZpdService\zpd1.disco" />
     <Content Include="ServiceReferences.ClientConfig" />
+    <None Include="Service References\ZpdService\zpd1.wsdl" />
+    <None Include="Service References\ZpdService\zpd3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ZpdService\zpd31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ZpdService\zpd32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ZpdService\ZPDService1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -118,7 +119,6 @@
     <Resource Include="Images\appbar.transport.pause.rest.png" />
     <Resource Include="Images\appbar.transport.play.rest.png" />
     <Resource Include="Images\appbar.transport.rew.rest.png" />
-    <None Include="Service References\ZpdService\zpd.disco" />
     <None Include="Service References\ZpdService\configuration91.svcinfo" />
     <None Include="Service References\ZpdService\configuration.svcinfo" />
     <None Include="Service References\ZpdService\Reference.svcmap">
