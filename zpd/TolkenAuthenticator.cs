@@ -90,7 +90,11 @@ namespace zpd
 
         private static string GetRandomString()
         {
+#if DEBUG
+            return "d3bug";
+#else
             return Path.GetRandomFileName().Replace(".", "");
+#endif //DEBUG
         }
 
         // Taken from http://dotnetpulse.blogspot.com/2007/12/sha1-hash-calculation-in-c.html
