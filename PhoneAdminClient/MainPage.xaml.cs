@@ -5,12 +5,11 @@ using System.Security.Cryptography;
 using System.ServiceModel;
 using System.Text;
 using System.Threading;
-using Microsoft.Phone.Controls;
 using PhoneAdminClient.ZpdService;
 
 namespace PhoneAdminClient
 {
-    public partial class MainPage : PhoneApplicationPage
+    public partial class MainPage
     {
         private readonly ZPDServiceClient _client;
         // We just need to keep a reference to the timer since we never really want it to stop
@@ -165,6 +164,11 @@ namespace PhoneAdminClient
         private void StartUpdateCurrentTrackInfoFromServer()
         {
             _client.GetCurrentPlayerStateAsync();
+        }
+
+        private void SettingsClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
     }
 }

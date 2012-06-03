@@ -43,6 +43,9 @@
                     <TextBlock x:Name="CurrentTrackTime" Grid.Row="0" Grid.Column="1" Text="0:00/0:00" TextAlignment="Right"/>
                     <TextBlock x:Name="CurrentTrackArtist" Grid.Row="1" Grid.ColumnSpan="2" Text="Artist loading..."/>
                 </Grid>
+                <!-- This is for the list of tracks.
+                    http://blogs.msdn.com/b/jasongin/archive/2011/01/03/wp7-reorderlistbox-improvements-rearrange-animations-and-more.aspx
+                    seems like a good base and it reorders. -->
             </StackPanel>
         </Grid>
     </Grid>
@@ -56,7 +59,7 @@
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.ff.rest.png" Text="Next" Click="NextTrackButtonClick"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Search"/>
-                <shell:ApplicationBarMenuItem Text="Settings"/>
+                <shell:ApplicationBarMenuItem Text="Settings" Click="SettingsClick"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
