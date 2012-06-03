@@ -27,16 +27,33 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <StackPanel x:Name="ContentStack" Orientation="Vertical">
+                <Grid x:Name="CurrentTrackPanel">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                
+                    <TextBlock x:Name="CurrentTrackTitle" Grid.Row="0" Grid.Column="0" Text="Loading..."/>
+                    <TextBlock x:Name="CurrentTrackTime" Grid.Row="0" Grid.Column="1" Text="0:00/0:00" TextAlignment="Right"/>
+                    <TextBlock x:Name="CurrentTrackArtist" Grid.Row="1" Grid.ColumnSpan="2" Text="Artist loading..."/>
+                </Grid>
+            </StackPanel>
+        </Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.rew.rest.png" Text="Previous"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.pause.rest.png" Text="Pause"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.rew.rest.png" Text="Previous" Click="PreviousTrackButtonClick"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.pause.rest.png" Text="Pause" Click="PauseButtonClick"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.play.rest.png" Text="Play" Click="PlayButtonClick"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.ff.rest.png" Text="Next"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.ff.rest.png" Text="Next" Click="NextTrackButtonClick"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Search"/>
                 <shell:ApplicationBarMenuItem Text="Settings"/>

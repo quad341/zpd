@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using Microsoft.Phone.Controls;
 using PhoneAdminClient.ZpdService;
 
@@ -12,19 +13,97 @@ namespace PhoneAdminClient
     public partial class MainPage : PhoneApplicationPage
     {
         private readonly ZPDServiceClient _client;
+        // We just need to keep a reference to the timer since we never really want it to stop
+// ReSharper disable NotAccessedField.Local
+        private readonly Timer _timer;
+// ReSharper restore NotAccessedField.Local
         // Constructor
         public MainPage()
         {
             _client = new ZPDServiceClient(new BasicHttpBinding(), new EndpointAddress("http://10.0.0.3:8000/zpd"));
             _client.PlayCompleted += PlayCompleted;
+            _client.NextTrackCompleted += NextTrackCompleted;
+            _client.PreviousTrackCompleted += PreviousTrackCompleted;
+            _client.PauseCompleted += PauseCompleted;
+            _client.GetCurrentPlayerStateCompleted += GetCurrentPlayerStateCompleted;
+
             InitializeComponent();
+            StartUpdateCurrentTrackInfoFromServer();
+            _timer = new Timer(timerCallback, this, 0, 1000);
+        }
+
+        private void timerCallback(object state)
+        {
+            Debug.Assert(state is MainPage);
+            var page = state as MainPage;
+            page.Dispatcher.BeginInvoke(page.StartUpdateCurrentTrackInfoFromServer);
+        }
+
+        private void GetCurrentPlayerStateCompleted(object sender, GetCurrentPlayerStateCompletedEventArgs e)
+        {
+            if (null == e.Error && null != e.Result)
+            {
+                CurrentTrackTitle.Text = e.Result.CurrentTrack.Name;
+                CurrentTrackArtist.Text = e.Result.CurrentTrack.Artist;
+
+                var elapsedTime = new TimeSpan(0, 0, 0, Convert.ToInt32(e.Result.CurrentTrackPosition));
+                var totalTime = new TimeSpan(0, 0, 0, e.Result.CurrentTrack.Duration);
+                CurrentTrackTime.Text = elapsedTime.ToString(@"m\:ss") + "/" + totalTime.ToString(@"m\:ss");
+            }
+            else
+            {
+                Debug.WriteLine("Get current player state either failed or got no data");
+            }
+        }
+
+        private void PauseCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (null == e.Error)
+            {
+                Debug.WriteLine("Pause succeeded");
+            }
+            else
+            {
+                Debug.WriteLine("Pause failed: {0}", e.Error.Message);
+            }
+        }
+
+        private void PreviousTrackCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (null == e.Error)
+            {
+                StartUpdateCurrentTrackInfoFromServer();
+                Debug.WriteLine("Previous Track succeeded");
+            }
+            else
+            {
+                Debug.WriteLine("Previous Track failed: {0}", e.Error.Message);
+            }
+        }
+
+        private void NextTrackCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (null == e.Error)
+            {
+                StartUpdateCurrentTrackInfoFromServer();
+                Debug.WriteLine("Next Track succeeded");
+            }
+            else
+            {
+                Debug.WriteLine("Next Track failed: {0}", e.Error.Message);
+            }
         }
 
         private void PlayCompleted(object sender, AsyncCompletedEventArgs e)
         {
             if (null == e.Error)
             {
-                Debug.WriteLine("Play succeeded?");
+                StartUpdateCurrentTrackInfoFromServer();
+                Debug.WriteLine("Play succeeded");
+            }
+            else
+            {
+                Debug.WriteLine("Play failed: {0}", e.Error.Message);
             }
         }
 
@@ -35,8 +114,7 @@ namespace PhoneAdminClient
 
         private AuthPacket GetAuthPacket()
         {
-            var packet = new AuthPacket();
-            packet.Timeout = AuthTolkenTimeout.FiveSeconds;
+            var packet = new AuthPacket {Timeout = AuthTolkenTimeout.FiveSeconds};
 
             var now = DateTime.UtcNow;
             var numAdjustedSeconds = 5 + (5 - (now.Second%5));
@@ -67,6 +145,26 @@ namespace PhoneAdminClient
             var crypto = new SHA256Managed();
 
             return BitConverter.ToString(crypto.ComputeHash(buffer)).Replace("-", "");
+        }
+
+        private void NextTrackButtonClick(object sender, EventArgs e)
+        {
+            _client.NextTrackAsync(GetAuthPacket());
+        }
+
+        private void PauseButtonClick(object sender, EventArgs e)
+        {
+            _client.PauseAsync(GetAuthPacket());
+        }
+
+        private void PreviousTrackButtonClick(object sender, EventArgs e)
+        {
+            _client.PreviousTrackAsync(GetAuthPacket());
+        }
+
+        private void StartUpdateCurrentTrackInfoFromServer()
+        {
+            _client.GetCurrentPlayerStateAsync();
         }
     }
 }

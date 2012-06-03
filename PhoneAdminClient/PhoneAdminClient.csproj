@@ -93,6 +93,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ZpdService\zpd1.disco" />
+    <Content Include="Images\appbar.add.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ServiceReferences.ClientConfig" />
     <None Include="Service References\ZpdService\zpd1.wsdl" />
     <None Include="Service References\ZpdService\zpd3.xsd">
@@ -113,12 +116,24 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\appbar.feature.search.rest.png" />
-    <Resource Include="Images\appbar.feature.settings.rest.png" />
-    <Resource Include="Images\appbar.transport.ff.rest.png" />
-    <Resource Include="Images\appbar.transport.pause.rest.png" />
-    <Resource Include="Images\appbar.transport.play.rest.png" />
-    <Resource Include="Images\appbar.transport.rew.rest.png" />
+    <Content Include="Images\appbar.feature.search.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\appbar.feature.settings.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\appbar.transport.ff.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\appbar.transport.pause.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\appbar.transport.play.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\appbar.transport.rew.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Service References\ZpdService\configuration91.svcinfo" />
     <None Include="Service References\ZpdService\configuration.svcinfo" />
     <None Include="Service References\ZpdService\Reference.svcmap">
