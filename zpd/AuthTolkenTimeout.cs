@@ -7,6 +7,7 @@
         FiveSeconds,
         TenSecionds,
         ThirtySeconds,
+        SixtySeconds,
         NoAuth
     }
 }

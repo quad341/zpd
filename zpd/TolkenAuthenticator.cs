@@ -32,6 +32,11 @@ namespace zpd
 
         public static bool IsValid(AuthTolkenTimeout timeout, string authTolken, int adjustedAmount)
         {
+            return IsValid(timeout, authTolken, adjustedAmount, false /*adjustForTransmission*/);
+        }
+
+        public static bool IsValid(AuthTolkenTimeout timeout, string authTolken, int adjustedAmount, bool adjustForTransmission)
+        {
             var valid = false;
             if (AcceptedAuthTolkenTimeouts == AuthTolkenTimeout.NoAuth)
             {
@@ -48,15 +53,19 @@ namespace zpd
                 {
                     case AuthTolkenTimeout.FiveSeconds:
                         numAdjustSeconds = 5 + (5 - (now.Second%5));
-                        numAdjustSeconds -= numAdjustSeconds > adjustedAmount ? 5 : 0;
+                        numAdjustSeconds -= adjustForTransmission && numAdjustSeconds > adjustedAmount ? 5 : 0;
                         break;
                     case AuthTolkenTimeout.TenSecionds:
                         numAdjustSeconds = 10 + (10 - (now.Second%10));
-                        numAdjustSeconds -= numAdjustSeconds > adjustedAmount ? 10 : 0;
+                        numAdjustSeconds -= adjustForTransmission && numAdjustSeconds > adjustedAmount ? 10 : 0;
                         break;
                     case AuthTolkenTimeout.ThirtySeconds:
                         numAdjustSeconds = 30 + (30 - (now.Second%30));
-                        numAdjustSeconds -= numAdjustSeconds > adjustedAmount ? 30 : 0;
+                        numAdjustSeconds -= adjustForTransmission && numAdjustSeconds > adjustedAmount ? 30 : 0;
+                        break;
+                    case AuthTolkenTimeout.SixtySeconds:
+                        numAdjustSeconds = 60 + (60 - (now.Second % 60));
+                        numAdjustSeconds -= adjustForTransmission && numAdjustSeconds > adjustedAmount ? 60 : 0;
                         break;
                     default:
                         Debug.Assert(false, "Unexpected timeout");
@@ -76,6 +85,12 @@ namespace zpd
                     Sha1HashOfString(adjustedTimeToSecond.ToString("yyyy-MM-dd:HH:mm:ss") + AuthString);
 
                 valid = authTolken == computedAuthTolken;
+
+                if (!valid && !adjustForTransmission)
+                {
+                    // lets try one last time adjusting
+                    valid = IsValid(timeout, authTolken, adjustedAmount, true /*adjustForTransmission*/);
+                }
 
             }
             return valid;

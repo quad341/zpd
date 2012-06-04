@@ -113,10 +113,10 @@ namespace PhoneAdminClient
 
         private AuthPacket GetAuthPacket()
         {
-            var packet = new AuthPacket {Timeout = AuthTolkenTimeout.FiveSeconds};
+            var packet = new AuthPacket {Timeout = AuthTolkenTimeout.SixtySeconds};
 
             var now = DateTime.UtcNow;
-            var numAdjustedSeconds = 5 + (5 - (now.Second%5));
+            var numAdjustedSeconds = 60 + (60 - (now.Second%60));
             var adjustedTime = now.AddSeconds(numAdjustedSeconds);
             // need granularity down to seconds
             var adjustedTimeToSecond = new DateTime(adjustedTime.Year,

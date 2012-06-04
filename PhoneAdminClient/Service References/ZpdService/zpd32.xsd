@@ -15,6 +15,7 @@
       <xs:enumeration value="FiveSeconds" />
       <xs:enumeration value="TenSecionds" />
       <xs:enumeration value="ThirtySeconds" />
+      <xs:enumeration value="SixtySeconds" />
       <xs:enumeration value="NoAuth" />
     </xs:restriction>
   </xs:simpleType>

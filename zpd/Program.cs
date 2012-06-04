@@ -13,7 +13,7 @@ namespace zpd
         static void Main()
         {
             ZuneMediaPlayerManager.EnsureInstance();
-            TolkenAuthenticator.Init(AuthTolkenTimeout.FiveSeconds);
+            TolkenAuthenticator.Init(AuthTolkenTimeout.Any);
             Console.WriteLine("Auth tolken is: {0}", TolkenAuthenticator.AuthString);
             StartService();
         }

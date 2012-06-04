@@ -95,7 +95,10 @@ namespace PhoneAdminClient.ZpdService {
         ThirtySeconds = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        NoAuth = 5,
+        SixtySeconds = 5,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NoAuth = 6,
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
