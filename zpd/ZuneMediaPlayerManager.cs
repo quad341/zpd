@@ -13,7 +13,7 @@ namespace zpd
     {
         private readonly ZuneApi _zune;
         private readonly Thread _zuneThread;
-        private static ZuneMediaPlayerManager _instance;
+        private static ZuneMediaPlayerManager s_instance;
 
         public static ZuneMediaPlayerManager Instance
         {
@@ -21,8 +21,8 @@ namespace zpd
             {
                 lock (typeof(ZuneMediaPlayerManager))
                 {
-                    Debug.Assert(null != _instance, "EnsureInstance should have already been called and this should not be closed");
-                    return _instance;
+                    Debug.Assert(null != s_instance, "EnsureInstance should have already been called and this should not be closed");
+                    return s_instance;
                 }
             }
         }
@@ -31,9 +31,9 @@ namespace zpd
         {
             lock(typeof(ZuneMediaPlayerManager))
             {
-                if (null == _instance)
+                if (null == s_instance)
                 {
-                    _instance = new ZuneMediaPlayerManager();
+                    s_instance = new ZuneMediaPlayerManager();
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace zpd
             {
                 return
                     new ZpdCurrentPlayerState(
-                        new ZpdTrack(0, // Invalid mediaId since this should not be used
+                        new ZpdTrack(_zune.CurrentTrack.Uri.GetHashCode(), // Invalid mediaId since this should not be used; it can be used as a differentiator though
                                      0, // Invalid mediaTypeId since this should not be used
                                      _zune.CurrentTrack.Title,
                                      _zune.CurrentTrack.Artist,
@@ -181,7 +181,8 @@ namespace zpd
             lock(this)
             {
                 return
-                    ConvertSearchTracksToZpdTracks(_zune.GetTracksAsSearchTrackSynchronous(0 /*startIndex*/, 0
+                    ConvertSearchTracksToZpdTracks(_zune.GetTracksAsSearchTrackSynchronous(
+                        _zune.CurrentTrack.Index + 1 /*startIndex*/, 0
                                                        /*count, 0=all*/));
             }
         }
@@ -190,11 +191,11 @@ namespace zpd
         {
             lock(typeof(ZuneMediaPlayerManager))
             {
-                if (null != _instance)
+                if (null != s_instance)
                 {
-                    _instance._zune.Close();
-                    _instance._zuneThread.Join();
-                    _instance = null;
+                    s_instance._zune.Close();
+                    s_instance._zuneThread.Join();
+                    s_instance = null;
                 }
             }
         }

@@ -16,6 +16,7 @@ namespace PhoneAdminClient
         private ZPDServiceClient _client;
         private int _clientId;
         private int _packetCount;
+        private int _currentTrackIdentifier;
         private readonly SettingsManager _settings;
 
         private ObservableCollection<string> _data;
@@ -26,11 +27,12 @@ namespace PhoneAdminClient
         // Constructor
         public MainPage()
         {
+            _currentTrackIdentifier = -1;
             _clientId = -1;
             _packetCount = 0;
             _settings = new SettingsManager();
 
-            _data = new ObservableCollection<string> {"test1", "test2"};
+            _data = new ObservableCollection<string> {"Loading tracks..."};
 
             InitializeComponent();
 
@@ -69,6 +71,7 @@ namespace PhoneAdminClient
             _client.GetCurrentQueueCompleted += GetCurrentQueueCompleted;
             _client.GetNewClientIdAsync();
             StartUpdateCurrentTrackInfoFromServer();
+            StartRefreshTrackList();
         }
 
         private void GetCurrentQueueCompleted(object sender, GetCurrentQueueCompletedEventArgs e)
@@ -118,6 +121,13 @@ namespace PhoneAdminClient
                 var elapsedTime = new TimeSpan(0, 0, 0, Convert.ToInt32(e.Result.CurrentTrackPosition));
                 var totalTime = new TimeSpan(0, 0, 0, e.Result.CurrentTrack.Duration);
                 CurrentTrackTime.Text = elapsedTime.ToString(@"m\:ss") + "/" + totalTime.ToString(@"m\:ss");
+
+                if (_currentTrackIdentifier != e.Result.CurrentTrack.MediaId)
+                {
+                    StartRefreshTrackList();
+                    _currentTrackIdentifier = e.Result.CurrentTrack.MediaId;
+                }
+
             }
             else
             {
@@ -241,6 +251,11 @@ namespace PhoneAdminClient
         }
 
         private void RefreshPanelRefreshRequested(object sender, EventArgs e)
+        {
+            StartRefreshTrackList();
+        }
+
+        private void StartRefreshTrackList()
         {
             refreshPanel.IsRefreshing = true;
             _client.GetCurrentQueueAsync();
