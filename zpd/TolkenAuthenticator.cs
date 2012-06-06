@@ -23,7 +23,7 @@ namespace zpd
         public static bool IsValid(string authTolken, int adjustedAmount, int clientId)
         {
             Debug.Assert(AuthTolkenTimeout.Any != AcceptedAuthTolkenTimeouts);
-            var valid = false;
+            bool valid = false;
             if (AuthTolkenTimeout.Any != AcceptedAuthTolkenTimeouts)
             {
                 valid = IsValid(AcceptedAuthTolkenTimeouts, authTolken, adjustedAmount, clientId);
@@ -37,21 +37,26 @@ namespace zpd
             return IsValid(timeout, authTolken, adjustedAmount, clientId, false /*adjustForTransmission*/);
         }
 
-        public static bool IsValid(AuthTolkenTimeout timeout, string authTolken, int adjustedAmount, int clientId, bool adjustForTransmission)
+        public static bool IsValid(AuthTolkenTimeout timeout,
+                                   string authTolken,
+                                   int adjustedAmount,
+                                   int clientId,
+                                   bool adjustForTransmission)
         {
-            var valid = false;
+            bool valid = false;
             // This has to be single threaded to avoid race conditions for authenticating the client packet count
-            lock (typeof(TolkenAuthenticator))
+            lock (typeof (TolkenAuthenticator))
             {
                 if (AcceptedAuthTolkenTimeouts == AuthTolkenTimeout.NoAuth)
                 {
                     valid = true;
                 }
-                else if (AuthTolkenTimeout.Any != timeout &&
+                else if (0 < clientId &&
+                         AuthTolkenTimeout.Any != timeout &&
                          (AcceptedAuthTolkenTimeouts == AuthTolkenTimeout.Any || AcceptedAuthTolkenTimeouts == timeout))
                 {
-                    var now = DateTime.UtcNow;
-                    var numAdjustSeconds = 0;
+                    DateTime now = DateTime.UtcNow;
+                    int numAdjustSeconds = 0;
 
                     // We have to round our seconds to the every nth second based on timeout
                     switch (timeout)
@@ -77,7 +82,7 @@ namespace zpd
                             break;
                     }
 
-                    var adjustedTime = now.AddSeconds(numAdjustSeconds);
+                    DateTime adjustedTime = now.AddSeconds(numAdjustSeconds);
                     // we only want granularity down to seconds
                     var adjustedTimeToSecond = new DateTime(adjustedTime.Year,
                                                             adjustedTime.Month,
@@ -86,9 +91,9 @@ namespace zpd
                                                             adjustedTime.Minute,
                                                             adjustedTime.Second);
 
-                    var currentClientCounter = s_connectionCounter[clientId - 1];
+                    int currentClientCounter = s_connectionCounter[clientId - 1];
 
-                    var computedAuthTolken =
+                    string computedAuthTolken =
                         Sha1HashOfString(adjustedTimeToSecond.ToString("yyyy-MM-dd:HH:mm:ss") + AuthString +
                                          currentClientCounter);
 
@@ -103,7 +108,6 @@ namespace zpd
                     {
                         IncrementClient(clientId);
                     }
-
                 }
             }
             return valid;
@@ -134,17 +138,17 @@ namespace zpd
             return "d3bug";
 #else
             return Path.GetRandomFileName().Replace(".", "");
-#endif //DEBUG
+#endif
+            //DEBUG
         }
 
         // Taken from http://dotnetpulse.blogspot.com/2007/12/sha1-hash-calculation-in-c.html
         private static string Sha1HashOfString(string input)
         {
-            var buffer = Encoding.Unicode.GetBytes(input);
+            byte[] buffer = Encoding.Unicode.GetBytes(input);
             var crypto = new SHA256Managed();
 
             return BitConverter.ToString(crypto.ComputeHash(buffer)).Replace("-", "");
         }
-
     }
 }
