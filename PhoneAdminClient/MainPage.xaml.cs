@@ -19,7 +19,7 @@ namespace PhoneAdminClient
         private int _currentTrackIdentifier;
         private readonly SettingsManager _settings;
 
-        private ObservableCollection<string> _data;
+        private readonly ObservableCollection<string> _data;
         // We just need to keep a reference to the timer since we never really want it to stop
 // ReSharper disable NotAccessedField.Local
         private readonly Timer _timer;
