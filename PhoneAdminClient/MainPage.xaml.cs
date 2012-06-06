@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -16,6 +17,8 @@ namespace PhoneAdminClient
         private int _clientId;
         private int _packetCount;
         private readonly SettingsManager _settings;
+
+        private ObservableCollection<string> _data;
         // We just need to keep a reference to the timer since we never really want it to stop
 // ReSharper disable NotAccessedField.Local
         private readonly Timer _timer;
@@ -27,11 +30,15 @@ namespace PhoneAdminClient
             _packetCount = 0;
             _settings = new SettingsManager();
 
+            _data = new ObservableCollection<string> {"test1", "test2"};
+
             InitializeComponent();
 
             InitClient();
 
             _timer = new Timer(TimerCallback, this, 0, 1000);
+
+            trackQueueListBox.DataContext = _data;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -59,8 +66,27 @@ namespace PhoneAdminClient
             _client.PauseCompleted += PauseCompleted;
             _client.GetCurrentPlayerStateCompleted += GetCurrentPlayerStateCompleted;
             _client.GetNewClientIdCompleted += GetNewClientIdCompleted;
+            _client.GetCurrentQueueCompleted += GetCurrentQueueCompleted;
             _client.GetNewClientIdAsync();
             StartUpdateCurrentTrackInfoFromServer();
+        }
+
+        private void GetCurrentQueueCompleted(object sender, GetCurrentQueueCompletedEventArgs e)
+        {
+            if (null == e.Error)
+            {
+                _data.Clear();
+                foreach (var track in e.Result)
+                {
+                    _data.Add(track.Name + " by " + track.Artist);
+                }
+
+                refreshPanel.IsRefreshing = false;
+            }
+            else
+            {
+                Debug.WriteLine("Error getting current queue");
+            }
         }
 
         private void GetNewClientIdCompleted(object sender, GetNewClientIdCompletedEventArgs e)
@@ -212,6 +238,12 @@ namespace PhoneAdminClient
         private void SettingsClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
+        }
+
+        private void RefreshPanelRefreshRequested(object sender, EventArgs e)
+        {
+            refreshPanel.IsRefreshing = true;
+            _client.GetCurrentQueueAsync();
         }
     }
 }

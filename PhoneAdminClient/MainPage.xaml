@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:rlb="clr-namespace:PhoneAdminClient.ReorderListBox"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
@@ -43,9 +44,25 @@
                     <TextBlock x:Name="CurrentTrackTime" Grid.Row="0" Grid.Column="1" Text="0:00/0:00" TextAlignment="Right"/>
                     <TextBlock x:Name="CurrentTrackArtist" Grid.Row="1" Grid.ColumnSpan="2" Text="Artist loading..."/>
                 </Grid>
-                <!-- This is for the list of tracks.
-                    http://blogs.msdn.com/b/jasongin/archive/2011/01/03/wp7-reorderlistbox-improvements-rearrange-animations-and-more.aspx
-                    seems like a good base and it reorders. -->
+                <rlb:PullDownToRefreshPanel
+            x:Name="refreshPanel"
+            RefreshRequested="RefreshPanelRefreshRequested" />
+                <rlb:ReorderListBox
+            x:Name="trackQueueListBox"
+            Grid.Row="3"
+            Margin="12,0,12,12"
+            IsReorderEnabled="True"
+            ItemsSource="{Binding}"
+            d:DataContext="{d:DesignData Source=ReorderListBox\\DesignData.xaml}">
+                    <rlb:ReorderListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                        Margin="12,4,12,4"
+                        FontSize="36"
+                        Text="{Binding}" />
+                        </DataTemplate>
+                    </rlb:ReorderListBox.ItemTemplate>
+                </rlb:ReorderListBox>
             </StackPanel>
         </Grid>
     </Grid>
