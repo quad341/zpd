@@ -52,6 +52,7 @@ namespace zpd
                     valid = true;
                 }
                 else if (0 < clientId &&
+                         clientId <= s_connectionCounter.Count &&
                          AuthTolkenTimeout.Any != timeout &&
                          (AcceptedAuthTolkenTimeouts == AuthTolkenTimeout.Any || AcceptedAuthTolkenTimeouts == timeout))
                 {
