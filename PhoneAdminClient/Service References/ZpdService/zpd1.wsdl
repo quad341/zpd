@@ -7,6 +7,12 @@
       <xsd:import schemaLocation="http://10.0.0.3:8000/zpd?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/zpd" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="IZPDService_GetNewClientId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetNewClientId" />
+  </wsdl:message>
+  <wsdl:message name="IZPDService_GetNewClientId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNewClientIdResponse" />
+  </wsdl:message>
   <wsdl:message name="IZPDService_Play_InputMessage">
     <wsdl:part name="parameters" element="tns:Play" />
   </wsdl:message>
@@ -116,6 +122,10 @@
     <wsdl:part name="parameters" element="tns:ClosePlayerResponse" />
   </wsdl:message>
   <wsdl:portType name="IZPDService">
+    <wsdl:operation name="GetNewClientId">
+      <wsdl:input wsaw:Action="http://zpd/IZPDService/GetNewClientId" message="tns:IZPDService_GetNewClientId_InputMessage" />
+      <wsdl:output wsaw:Action="http://zpd/IZPDService/GetNewClientIdResponse" message="tns:IZPDService_GetNewClientId_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="Play">
       <wsdl:input wsaw:Action="http://zpd/IZPDService/Play" message="tns:IZPDService_Play_InputMessage" />
       <wsdl:output wsaw:Action="http://zpd/IZPDService/PlayResponse" message="tns:IZPDService_Play_OutputMessage" />

@@ -3,11 +3,12 @@ using System.ServiceModel;
 
 namespace zpd
 {
-    
-    //TODO: many methods should support authentication in some way
     [ServiceContract(Namespace = "http://zpd")]
     public interface IZPDService
     {
+        [OperationContract]
+        int GetNewClientId();
+
         [OperationContract]
         void Play(AuthPacket authPacket);
 

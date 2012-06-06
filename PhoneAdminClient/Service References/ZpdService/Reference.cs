@@ -22,6 +22,8 @@ namespace PhoneAdminClient.ZpdService {
         
         private string AuthTolkenField;
         
+        private int ClientIdField;
+        
         private int OffsetField;
         
         private PhoneAdminClient.ZpdService.AuthTolkenTimeout TimeoutField;
@@ -35,6 +37,19 @@ namespace PhoneAdminClient.ZpdService {
                 if ((object.ReferenceEquals(this.AuthTolkenField, value) != true)) {
                     this.AuthTolkenField = value;
                     this.RaisePropertyChanged("AuthTolken");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ClientId {
+            get {
+                return this.ClientIdField;
+            }
+            set {
+                if ((this.ClientIdField.Equals(value) != true)) {
+                    this.ClientIdField = value;
+                    this.RaisePropertyChanged("ClientId");
                 }
             }
         }
@@ -285,6 +300,11 @@ namespace PhoneAdminClient.ZpdService {
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://zpd", ConfigurationName="ZpdService.IZPDService")]
     public interface IZPDService {
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://zpd/IZPDService/GetNewClientId", ReplyAction="http://zpd/IZPDService/GetNewClientIdResponse")]
+        System.IAsyncResult BeginGetNewClientId(System.AsyncCallback callback, object asyncState);
+        
+        int EndGetNewClientId(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://zpd/IZPDService/Play", ReplyAction="http://zpd/IZPDService/PlayResponse")]
         System.IAsyncResult BeginPlay(PhoneAdminClient.ZpdService.AuthPacket authPacket, System.AsyncCallback callback, object asyncState);
         
@@ -382,6 +402,25 @@ namespace PhoneAdminClient.ZpdService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetNewClientIdCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetNewClientIdCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public int Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((int)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class SearchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -440,6 +479,12 @@ namespace PhoneAdminClient.ZpdService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class ZPDServiceClient : System.ServiceModel.ClientBase<PhoneAdminClient.ZpdService.IZPDService>, PhoneAdminClient.ZpdService.IZPDService {
+        
+        private BeginOperationDelegate onBeginGetNewClientIdDelegate;
+        
+        private EndOperationDelegate onEndGetNewClientIdDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetNewClientIdCompletedDelegate;
         
         private BeginOperationDelegate onBeginPlayDelegate;
         
@@ -602,6 +647,8 @@ namespace PhoneAdminClient.ZpdService {
             }
         }
         
+        public event System.EventHandler<GetNewClientIdCompletedEventArgs> GetNewClientIdCompleted;
+        
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> PlayCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> PlaySongIndexCompleted;
@@ -641,6 +688,50 @@ namespace PhoneAdminClient.ZpdService {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> CloseCompleted;
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult PhoneAdminClient.ZpdService.IZPDService.BeginGetNewClientId(System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetNewClientId(callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        int PhoneAdminClient.ZpdService.IZPDService.EndGetNewClientId(System.IAsyncResult result) {
+            return base.Channel.EndGetNewClientId(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetNewClientId(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            return ((PhoneAdminClient.ZpdService.IZPDService)(this)).BeginGetNewClientId(callback, asyncState);
+        }
+        
+        private object[] OnEndGetNewClientId(System.IAsyncResult result) {
+            int retVal = ((PhoneAdminClient.ZpdService.IZPDService)(this)).EndGetNewClientId(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetNewClientIdCompleted(object state) {
+            if ((this.GetNewClientIdCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetNewClientIdCompleted(this, new GetNewClientIdCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetNewClientIdAsync() {
+            this.GetNewClientIdAsync(null);
+        }
+        
+        public void GetNewClientIdAsync(object userState) {
+            if ((this.onBeginGetNewClientIdDelegate == null)) {
+                this.onBeginGetNewClientIdDelegate = new BeginOperationDelegate(this.OnBeginGetNewClientId);
+            }
+            if ((this.onEndGetNewClientIdDelegate == null)) {
+                this.onEndGetNewClientIdDelegate = new EndOperationDelegate(this.OnEndGetNewClientId);
+            }
+            if ((this.onGetNewClientIdCompletedDelegate == null)) {
+                this.onGetNewClientIdCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetNewClientIdCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetNewClientIdDelegate, null, this.onEndGetNewClientIdDelegate, this.onGetNewClientIdCompletedDelegate, userState);
+        }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.IAsyncResult PhoneAdminClient.ZpdService.IZPDService.BeginPlay(PhoneAdminClient.ZpdService.AuthPacket authPacket, System.AsyncCallback callback, object asyncState) {
@@ -1537,6 +1628,18 @@ namespace PhoneAdminClient.ZpdService {
             
             public ZPDServiceClientChannel(System.ServiceModel.ClientBase<PhoneAdminClient.ZpdService.IZPDService> client) : 
                     base(client) {
+            }
+            
+            public System.IAsyncResult BeginGetNewClientId(System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[0];
+                System.IAsyncResult _result = base.BeginInvoke("GetNewClientId", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public int EndGetNewClientId(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                int _result = ((int)(base.EndInvoke("GetNewClientId", _args, result)));
+                return _result;
             }
             
             public System.IAsyncResult BeginPlay(PhoneAdminClient.ZpdService.AuthPacket authPacket, System.AsyncCallback callback, object asyncState) {

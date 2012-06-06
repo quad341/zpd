@@ -3,6 +3,7 @@
   <xs:complexType name="AuthPacket">
     <xs:sequence>
       <xs:element minOccurs="0" name="AuthTolken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientId" type="xs:int" />
       <xs:element minOccurs="0" name="Offset" type="xs:int" />
       <xs:element minOccurs="0" name="Timeout" type="tns:AuthTolkenTimeout" />
     </xs:sequence>

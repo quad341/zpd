@@ -4,6 +4,11 @@ namespace zpd
 {
     class ZPDService : IZPDService
     {
+        public int GetNewClientId()
+        {
+            return TolkenAuthenticator.GetNewClientId();
+        }
+
         public void Play(AuthPacket authPacket)
         {
             if (TolkenAuthenticator.IsValid(authPacket))

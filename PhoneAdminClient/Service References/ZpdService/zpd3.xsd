@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://zpd" elementFormDefault="qualified" targetNamespace="http://zpd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://10.0.0.3:8000/zpd?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/zpd" />
+  <xs:element name="GetNewClientId">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNewClientIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetNewClientIdResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Play">
     <xs:complexType>
       <xs:sequence>
