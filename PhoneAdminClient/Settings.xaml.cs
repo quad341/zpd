@@ -30,6 +30,7 @@ namespace PhoneAdminClient
         private void UpdateSettingsAndGoBack()
         {
             _settingsManager.UpdateSettings(HostBox.Text, PortBox.Text, PasswordBox.Text);
+            ClientManager.InitAndGetClient();
             NavigationService.GoBack();
         }
     }

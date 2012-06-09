@@ -3,8 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using PhoneAdminClient.ZpdService;
 
@@ -13,6 +16,7 @@ namespace PhoneAdminClient
     public partial class MainPage
     {
         private ZPDServiceClient _client;
+        private int _clientGeneration;
         private int _clientId;
         private int _packetCount;
         private int _currentTrackIdentifier;
@@ -20,9 +24,7 @@ namespace PhoneAdminClient
 
         private readonly ObservableCollection<string> _data;
         // We just need to keep a reference to the timer since we never really want it to stop
-// ReSharper disable NotAccessedField.Local
         private readonly Timer _timer;
-// ReSharper restore NotAccessedField.Local
         // Constructor
         public MainPage()
         {
@@ -34,6 +36,10 @@ namespace PhoneAdminClient
             _data = new ObservableCollection<string> {"Loading tracks..."};
 
             InitializeComponent();
+            if (null == ClientManager.Client)
+            {
+                ClientManager.InitAndGetClient();
+            }
 
             InitClient();
 
@@ -51,7 +57,21 @@ namespace PhoneAdminClient
 
         private void InitClient()
         {
-            _client = ClientManager.InitAndGetClient();
+            if (ClientManager.ClientGeneration > _clientGeneration)
+            {
+                // we don't want the timer to call back while we change this
+                if (null != _timer)
+                {
+                    _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                }
+                _client = ClientManager.Client;
+                _clientGeneration = ClientManager.ClientGeneration;
+
+                if (null != _timer)
+                {
+                    _timer.Change(0, 1000);
+                }
+            }
 
             _client.PlayCompleted += PlayCompleted;
             _client.NextTrackCompleted += NextTrackCompleted;
@@ -60,9 +80,23 @@ namespace PhoneAdminClient
             _client.GetCurrentPlayerStateCompleted += GetCurrentPlayerStateCompleted;
             _client.GetNewClientIdCompleted += GetNewClientIdCompleted;
             _client.GetCurrentQueueCompleted += GetCurrentQueueCompleted;
+            _client.QueueTrackCompleted += QueueTrackCompleted;
             _client.GetNewClientIdAsync();
             StartUpdateCurrentTrackInfoFromServer();
             StartRefreshTrackList();
+        }
+
+        private void QueueTrackCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            ClientManager.RequestCount--;
+            if (null == e.Error)
+            {
+                StartRefreshTrackList();
+            }
+            else
+            {
+                Debug.WriteLine("Queue track failed");
+            }
         }
 
         private void GetCurrentQueueCompleted(object sender, GetCurrentQueueCompletedEventArgs e)
@@ -240,7 +274,10 @@ namespace PhoneAdminClient
 
         private void StartUpdateCurrentTrackInfoFromServer()
         {
-            StartClientRequest(() => _client.GetCurrentPlayerStateAsync());
+            if (CommunicationState.Opened == _client.State)
+            {
+                StartClientRequest(() => _client.GetCurrentPlayerStateAsync());
+            }
         }
 
         private void SettingsClick(object sender, EventArgs e)
@@ -283,6 +320,14 @@ namespace PhoneAdminClient
         private void SearchClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
+        }
+
+        private void RemoveTrackTap(object sender, GestureEventArgs e)
+        {
+            Debug.Assert(sender is Image);
+            var img = sender as Image;
+            Debug.Assert(img.DataContext is ZpdTrack);
+            var track = img.DataContext as ZpdTrack;
         }
     }
 }

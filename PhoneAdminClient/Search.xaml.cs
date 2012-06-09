@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using PhoneAdminClient.ZpdService;
 
@@ -8,12 +10,12 @@ namespace PhoneAdminClient
 {
     public partial class Search
     {
-        private readonly ObservableCollection<string> _data;
+        private readonly ObservableCollection<ZpdTrack> _data;
         public Search()
         {
             InitializeComponent();
 
-            _data = new ObservableCollection<string>();
+            _data = new ObservableCollection<ZpdTrack>();
             searchResultsListBox.DataContext = _data;
         }
 
@@ -62,13 +64,33 @@ namespace PhoneAdminClient
                 _data.Clear();
                 foreach (var track in e.Result)
                 {
-                    _data.Add(track.Name + " by " + track.Artist);
+                    _data.Add(track);
                 }
                 refreshPanel.IsRefreshing = false;
             }
             else
             {
                 Debug.WriteLine("Search failed");
+                NavigationService.GoBack();
+            }
+        }
+
+        private void StackPanelTap(object sender, GestureEventArgs e)
+        {
+            Debug.Assert(sender is StackPanel);
+            var sp = sender as StackPanel;
+            Debug.Assert(sp.DataContext is ZpdTrack);
+            var track = sp.DataContext as ZpdTrack;
+            
+            if (ClientManager.CanOpenMoreRequests)
+            {
+                ClientManager.RequestCount++;
+                ClientManager.Client.QueueTrackAsync(track.MediaId, track.MediaTypeId);
+                NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                Debug.WriteLine("Can't send a queue request");
                 NavigationService.GoBack();
             }
         }

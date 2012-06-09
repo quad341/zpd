@@ -56,10 +56,19 @@
             ItemsSource="{Binding}">
             <rlb:ReorderListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock
-                        Margin="12,4,12,4"
-                        Style="{StaticResource PhoneTextNormalStyle}"
-                        Text="{Binding}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Images/appbar.delete.rest.png" Tap="RemoveTrackTap"/>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock
+                            Margin="12,4,12,0"
+                            Style="{StaticResource PhoneTextNormalStyle}"
+                            Text="{Binding Path=Name}" />
+                            <TextBlock
+                            Margin="12,0,12,4"
+                            Style="{StaticResource PhoneTextNormalStyle}"
+                            Text="{Binding Path=Artist}" />
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </rlb:ReorderListBox.ItemTemplate>
         </rlb:ReorderListBox>

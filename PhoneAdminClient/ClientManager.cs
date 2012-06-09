@@ -19,12 +19,13 @@ namespace PhoneAdminClient
         }
         public static ZPDServiceClient Client { get; private set; }
         public static int RequestCount { get; set; }
+        public static int ClientGeneration { get; private set; }
 
         public static ZPDServiceClient InitAndGetClient()
         {
             if (null != Client)
             {
-                Client.CloseAsync();
+                Client.Abort();
                 Client = null;
             }
 
@@ -32,6 +33,8 @@ namespace PhoneAdminClient
                                           new EndpointAddress("http://" + SettingsManager.Instance.Host + ":" +
                                                               SettingsManager.Instance.Port +
                                                               "/zpd"));
+
+            ClientGeneration++;
 
             return Client;
         }

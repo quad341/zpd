@@ -180,10 +180,18 @@ namespace zpd
         {
             lock(this)
             {
-                return
+                var startIndex = _zune.CurrentTrack.Index + 1;
+                var tracks =
                     ConvertSearchTracksToZpdTracks(_zune.GetTracksAsSearchTrackSynchronous(
-                        _zune.CurrentTrack.Index + 1 /*startIndex*/, 0
+                        startIndex /*startIndex*/, 0
                                                        /*count, 0=all*/));
+                // add their queue indexes
+                var i = 0;
+                foreach (var track in tracks)
+                {
+                    track.QueueIndex = startIndex + i++;
+                }
+                return tracks;
             }
         }
 

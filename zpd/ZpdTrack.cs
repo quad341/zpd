@@ -22,6 +22,8 @@ namespace zpd
         public string Name { get; set; }
         [DataMember]
         public int Duration { get; set; }
+        [DataMember]
+        public int QueueIndex { get; set; }
 
         public ZpdTrack (int mediaId, int mediaTypeId)
         {

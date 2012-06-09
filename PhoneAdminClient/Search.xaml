@@ -47,11 +47,16 @@
             ItemsSource="{Binding}">
             <rlb:ReorderListBox.ItemTemplate>
                 <DataTemplate>
+                    <StackPanel Orientation="Vertical" Tap="StackPanelTap">
                     <TextBlock
-                        Margin="12,4,12,4"
+                        Margin="12,4,12,0"
                         Style="{StaticResource PhoneTextNormalStyle}"
-                        TextWrapping="Wrap"
-                        Text="{Binding}" />
+                        Text="{Binding Path=Name}" />
+                        <TextBlock
+                        Margin="12,0,12,4"
+                        Style="{StaticResource PhoneTextNormalStyle}"
+                        Text="{Binding Path=Artist}" />
+                    </StackPanel>
                 </DataTemplate>
             </rlb:ReorderListBox.ItemTemplate>
         </rlb:ReorderListBox>
