@@ -279,5 +279,10 @@ namespace PhoneAdminClient
             CurrentTrackTime.Text = "0:00/0:00";
             _data.Clear();
         }
+
+        private void SearchClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
+        }
     }
 }

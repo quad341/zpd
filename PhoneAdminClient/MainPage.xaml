@@ -73,7 +73,7 @@
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.play.rest.png" Text="Play" Click="PlayButtonClick"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.transport.ff.rest.png" Text="Next" Click="NextTrackButtonClick"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Search"/>
+                <shell:ApplicationBarMenuItem Text="Search" Click="SearchClick"/>
                 <shell:ApplicationBarMenuItem Text="Settings" Click="SettingsClick"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
