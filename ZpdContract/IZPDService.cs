@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.ServiceModel;
+using zpd;
 
-namespace zpd
+namespace ZpdContract
 {
     [ServiceContract(Namespace = "http://zpd")]
     public interface IZPDService

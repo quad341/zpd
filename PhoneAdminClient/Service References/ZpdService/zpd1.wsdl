@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://zpd" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://zpd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://zpd" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://zpd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://zpd/Imports">
-      <xsd:import schemaLocation="http://10.0.0.3:8000/zpd?xsd=xsd0" namespace="http://zpd" />
-      <xsd:import schemaLocation="http://10.0.0.3:8000/zpd?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://10.0.0.3:8000/zpd?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/zpd" />
+      <xsd:import schemaLocation="http://10.0.0.6:8000/zpd?xsd=xsd0" namespace="http://zpd" />
+      <xsd:import schemaLocation="http://10.0.0.6:8000/zpd?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://10.0.0.6:8000/zpd?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ZpdContract" />
+      <xsd:import schemaLocation="http://10.0.0.6:8000/zpd?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/zpd" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IZPDService_GetNewClientId_InputMessage">
@@ -123,80 +124,80 @@
   </wsdl:message>
   <wsdl:portType name="IZPDService">
     <wsdl:operation name="GetNewClientId">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/GetNewClientId" message="tns:IZPDService_GetNewClientId_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/GetNewClientIdResponse" message="tns:IZPDService_GetNewClientId_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/GetNewClientId" message="tns:IZPDService_GetNewClientId_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/GetNewClientIdResponse" message="tns:IZPDService_GetNewClientId_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Play">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/Play" message="tns:IZPDService_Play_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/PlayResponse" message="tns:IZPDService_Play_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/Play" message="tns:IZPDService_Play_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/PlayResponse" message="tns:IZPDService_Play_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="PlaySongIndex">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/PlaySongIndex" message="tns:IZPDService_PlaySongIndex_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/PlaySongIndexResponse" message="tns:IZPDService_PlaySongIndex_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/PlaySongIndex" message="tns:IZPDService_PlaySongIndex_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/PlaySongIndexResponse" message="tns:IZPDService_PlaySongIndex_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Pause">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/Pause" message="tns:IZPDService_Pause_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/PauseResponse" message="tns:IZPDService_Pause_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/Pause" message="tns:IZPDService_Pause_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/PauseResponse" message="tns:IZPDService_Pause_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Stop">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/Stop" message="tns:IZPDService_Stop_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/StopResponse" message="tns:IZPDService_Stop_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/Stop" message="tns:IZPDService_Stop_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/StopResponse" message="tns:IZPDService_Stop_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="NextTrack">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/NextTrack" message="tns:IZPDService_NextTrack_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/NextTrackResponse" message="tns:IZPDService_NextTrack_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/NextTrack" message="tns:IZPDService_NextTrack_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/NextTrackResponse" message="tns:IZPDService_NextTrack_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="PreviousTrack">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/PreviousTrack" message="tns:IZPDService_PreviousTrack_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/PreviousTrackResponse" message="tns:IZPDService_PreviousTrack_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/PreviousTrack" message="tns:IZPDService_PreviousTrack_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/PreviousTrackResponse" message="tns:IZPDService_PreviousTrack_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ToggleFastForward">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/ToggleFastForward" message="tns:IZPDService_ToggleFastForward_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/ToggleFastForwardResponse" message="tns:IZPDService_ToggleFastForward_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/ToggleFastForward" message="tns:IZPDService_ToggleFastForward_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/ToggleFastForwardResponse" message="tns:IZPDService_ToggleFastForward_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ToggleRewind">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/ToggleRewind" message="tns:IZPDService_ToggleRewind_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/ToggleRewindResponse" message="tns:IZPDService_ToggleRewind_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/ToggleRewind" message="tns:IZPDService_ToggleRewind_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/ToggleRewindResponse" message="tns:IZPDService_ToggleRewind_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ToggleShuffle">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/ToggleShuffle" message="tns:IZPDService_ToggleShuffle_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/ToggleShuffleResponse" message="tns:IZPDService_ToggleShuffle_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/ToggleShuffle" message="tns:IZPDService_ToggleShuffle_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/ToggleShuffleResponse" message="tns:IZPDService_ToggleShuffle_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ToggleRepeat">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/ToggleRepeat" message="tns:IZPDService_ToggleRepeat_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/ToggleRepeatResponse" message="tns:IZPDService_ToggleRepeat_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/ToggleRepeat" message="tns:IZPDService_ToggleRepeat_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/ToggleRepeatResponse" message="tns:IZPDService_ToggleRepeat_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ReIndexLibrary">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/ReIndexLibrary" message="tns:IZPDService_ReIndexLibrary_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/ReIndexLibraryResponse" message="tns:IZPDService_ReIndexLibrary_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/ReIndexLibrary" message="tns:IZPDService_ReIndexLibrary_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/ReIndexLibraryResponse" message="tns:IZPDService_ReIndexLibrary_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Search">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/Search" message="tns:IZPDService_Search_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/SearchResponse" message="tns:IZPDService_Search_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/Search" message="tns:IZPDService_Search_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/SearchResponse" message="tns:IZPDService_Search_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="QueueTrack">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/QueueTrack" message="tns:IZPDService_QueueTrack_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/QueueTrackResponse" message="tns:IZPDService_QueueTrack_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/QueueTrack" message="tns:IZPDService_QueueTrack_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/QueueTrackResponse" message="tns:IZPDService_QueueTrack_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="QueueTrackAtIndex">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/QueueTrackAtIndex" message="tns:IZPDService_QueueTrackAtIndex_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/QueueTrackAtIndexResponse" message="tns:IZPDService_QueueTrackAtIndex_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/QueueTrackAtIndex" message="tns:IZPDService_QueueTrackAtIndex_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/QueueTrackAtIndexResponse" message="tns:IZPDService_QueueTrackAtIndex_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="RemoveTrackAtIndex">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/RemoveTrackAtIndex" message="tns:IZPDService_RemoveTrackAtIndex_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/RemoveTrackAtIndexResponse" message="tns:IZPDService_RemoveTrackAtIndex_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/RemoveTrackAtIndex" message="tns:IZPDService_RemoveTrackAtIndex_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/RemoveTrackAtIndexResponse" message="tns:IZPDService_RemoveTrackAtIndex_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetCurrentPlayerState">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/GetCurrentPlayerState" message="tns:IZPDService_GetCurrentPlayerState_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/GetCurrentPlayerStateResponse" message="tns:IZPDService_GetCurrentPlayerState_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/GetCurrentPlayerState" message="tns:IZPDService_GetCurrentPlayerState_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/GetCurrentPlayerStateResponse" message="tns:IZPDService_GetCurrentPlayerState_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetCurrentQueue">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/GetCurrentQueue" message="tns:IZPDService_GetCurrentQueue_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/GetCurrentQueueResponse" message="tns:IZPDService_GetCurrentQueue_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/GetCurrentQueue" message="tns:IZPDService_GetCurrentQueue_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/GetCurrentQueueResponse" message="tns:IZPDService_GetCurrentQueue_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ClosePlayer">
-      <wsdl:input wsaw:Action="http://zpd/IZPDService/ClosePlayer" message="tns:IZPDService_ClosePlayer_InputMessage" />
-      <wsdl:output wsaw:Action="http://zpd/IZPDService/ClosePlayerResponse" message="tns:IZPDService_ClosePlayer_OutputMessage" />
+      <wsdl:input wsam:Action="http://zpd/IZPDService/ClosePlayer" message="tns:IZPDService_ClosePlayer_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/ClosePlayerResponse" message="tns:IZPDService_ClosePlayer_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

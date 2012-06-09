@@ -116,8 +116,11 @@
     <None Include="Service References\ZpdService\PhoneAdminClient.ZpdService.ZpdTrack.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ZpdService\zpd1.disco" />
     <Content Include="Images\appbar.add.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Service References\ZpdService\zpd1.disco" />
+    <Content Include="Images\appbar.delete.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ServiceReferences.ClientConfig" />
@@ -125,10 +128,13 @@
     <None Include="Service References\ZpdService\zpd3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ZpdService\zpd31.xsd">
+    <None Include="Service References\ZpdService\zpd4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ZpdService\zpd32.xsd">
+    <None Include="Service References\ZpdService\zpd5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ZpdService\zpd6.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ZpdService\ZPDService1.wsdl" />

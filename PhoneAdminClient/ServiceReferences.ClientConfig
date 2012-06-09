@@ -9,7 +9,7 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://10.0.0.3:8000/zpd" binding="basicHttpBinding"
+            <endpoint address="http://10.0.0.6:8000/zpd" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IZPDService" contract="ZpdService.IZPDService"
                 name="BasicHttpBinding_IZPDService" />
         </client>

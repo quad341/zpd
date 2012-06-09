@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://zpd" elementFormDefault="qualified" targetNamespace="http://zpd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://10.0.0.6:8000/zpd?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ZpdContract" />
+  <xs:import schemaLocation="http://10.0.0.6:8000/zpd?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/zpd" />
+  <xs:element name="GetNewClientId">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNewClientIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetNewClientIdResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Play">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q1:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PlayResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PlaySongIndex">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q2:AuthPacket" />
+        <xs:element minOccurs="0" name="index" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PlaySongIndexResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Pause">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q3:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PauseResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Stop">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q4:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StopResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NextTrack">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q5:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NextTrackResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PreviousTrack">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q6:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PreviousTrackResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleFastForward">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q7:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleFastForwardResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleRewind">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q8:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleRewindResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleShuffle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q9:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleShuffleResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleRepeat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q10:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToggleRepeatResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReIndexLibrary">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q11:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReIndexLibraryResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Search">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="searchTerm" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/zpd" minOccurs="0" name="SearchResult" nillable="true" type="q12:ArrayOfZpdTrack" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueueTrack">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="mediaId" type="xs:int" />
+        <xs:element minOccurs="0" name="mediaTypeId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueueTrackResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueueTrackAtIndex">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q13:AuthPacket" />
+        <xs:element minOccurs="0" name="mediaId" type="xs:int" />
+        <xs:element minOccurs="0" name="mediaTypeId" type="xs:int" />
+        <xs:element minOccurs="0" name="index" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueueTrackAtIndexResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveTrackAtIndex">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q14:AuthPacket" />
+        <xs:element minOccurs="0" name="index" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveTrackAtIndexResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCurrentPlayerState">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCurrentPlayerStateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/zpd" minOccurs="0" name="GetCurrentPlayerStateResult" nillable="true" type="q15:ZpdCurrentPlayerState" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCurrentQueue">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCurrentQueueResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/zpd" minOccurs="0" name="GetCurrentQueueResult" nillable="true" type="q16:ArrayOfZpdTrack" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ClosePlayer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ZpdContract" minOccurs="0" name="authPacket" nillable="true" type="q17:AuthPacket" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ClosePlayerResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

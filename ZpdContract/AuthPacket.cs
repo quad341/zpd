@@ -1,6 +1,7 @@
 using System.Runtime.Serialization;
+using zpd;
 
-namespace zpd
+namespace ZpdContract
 {
     [DataContract]
     public class AuthPacket

@@ -22,7 +22,7 @@ namespace PhoneAdminClient
         private int _currentTrackIdentifier;
         private readonly SettingsManager _settings;
 
-        private readonly ObservableCollection<string> _data;
+        private readonly ObservableCollection<ZpdTrack> _data;
         // We just need to keep a reference to the timer since we never really want it to stop
         private readonly Timer _timer;
         // Constructor
@@ -33,7 +33,7 @@ namespace PhoneAdminClient
             _packetCount = 0;
             _settings = SettingsManager.Instance;
 
-            _data = new ObservableCollection<string> {"Loading tracks..."};
+            _data = new ObservableCollection<ZpdTrack>();
 
             InitializeComponent();
             if (null == ClientManager.Client)
@@ -81,9 +81,23 @@ namespace PhoneAdminClient
             _client.GetNewClientIdCompleted += GetNewClientIdCompleted;
             _client.GetCurrentQueueCompleted += GetCurrentQueueCompleted;
             _client.QueueTrackCompleted += QueueTrackCompleted;
+            _client.RemoveTrackAtIndexCompleted += RemoveTrackCompleted;
             _client.GetNewClientIdAsync();
             StartUpdateCurrentTrackInfoFromServer();
             StartRefreshTrackList();
+        }
+
+        private void RemoveTrackCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            ClientManager.RequestCount--;
+            if (null == e.Error)
+            {
+                StartRefreshTrackList();
+            }
+            else
+            {
+                Debug.WriteLine("Remove Track Failed");
+            }
         }
 
         private void QueueTrackCompleted(object sender, AsyncCompletedEventArgs e)
@@ -107,7 +121,7 @@ namespace PhoneAdminClient
                 _data.Clear();
                 foreach (var track in e.Result)
                 {
-                    _data.Add(track.Name + " by " + track.Artist);
+                    _data.Add(track);
                 }
 
                 refreshPanel.IsRefreshing = false;
@@ -328,6 +342,8 @@ namespace PhoneAdminClient
             var img = sender as Image;
             Debug.Assert(img.DataContext is ZpdTrack);
             var track = img.DataContext as ZpdTrack;
+
+            StartClientRequest(() => _client.RemoveTrackAtIndexAsync(GetAuthPacket(), track.QueueIndex));
         }
     }
 }

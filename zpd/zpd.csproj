@@ -72,17 +72,12 @@
     <Reference Include="ZuneShell, Version=4.7.0.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthPacket.cs" />
     <Compile Include="IMediaPlayerManager.cs" />
-    <Compile Include="IZPDService.cs" />
-    <Compile Include="AuthTolkenTimeout.cs" />
     <Compile Include="TolkenAuthenticator.cs" />
     <Compile Include="ZuneMediaPlayerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZpdCurrentPlayerState.cs" />
     <Compile Include="ZPDService.cs" />
-    <Compile Include="ZpdTrack.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -112,6 +107,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ZpdContract\ZpdContract.csproj">
+      <Project>{C2B45BA7-9056-4993-9073-118BE99F3BB3}</Project>
+      <Name>ZpdContract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ZuneApi\ZuneApi.csproj">
       <Project>{EC7553A4-D88C-4E64-A25C-EFCC118EF4FF}</Project>
       <Name>ZuneApi</Name>

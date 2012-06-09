@@ -17,7 +17,7 @@ namespace PhoneAdminClient.ZpdService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AuthPacket", Namespace="http://schemas.datacontract.org/2004/07/zpd")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AuthPacket", Namespace="http://schemas.datacontract.org/2004/07/ZpdContract")]
     public partial class AuthPacket : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string AuthTolkenField;
@@ -133,6 +133,8 @@ namespace PhoneAdminClient.ZpdService {
         
         private string NameField;
         
+        private int QueueIndexField;
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Album {
             get {
@@ -207,6 +209,19 @@ namespace PhoneAdminClient.ZpdService {
                 if ((object.ReferenceEquals(this.NameField, value) != true)) {
                     this.NameField = value;
                     this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int QueueIndex {
+            get {
+                return this.QueueIndexField;
+            }
+            set {
+                if ((this.QueueIndexField.Equals(value) != true)) {
+                    this.QueueIndexField = value;
+                    this.RaisePropertyChanged("QueueIndex");
                 }
             }
         }

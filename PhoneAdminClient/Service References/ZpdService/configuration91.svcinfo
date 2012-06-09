@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="oaoaftOtMaAY7pf2ZS/Z/HxyTS4=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="aFFQ9MSBWRacudw/7FG2+bfAy7o=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IZPDService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IZPDService" contract="ZpdService.IZPDService" bindingType="basicHttpBinding" address="http://10.0.0.3:8000/zpd" bindingConfiguration="BasicHttpBinding_IZPDService">
+    <endpoint name="BasicHttpBinding_IZPDService" contract="ZpdService.IZPDService" bindingType="basicHttpBinding" address="http://10.0.0.6:8000/zpd" bindingConfiguration="BasicHttpBinding_IZPDService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://10.0.0.3:8000/zpd</serializedValue>
+          <serializedValue>http://10.0.0.6:8000/zpd</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

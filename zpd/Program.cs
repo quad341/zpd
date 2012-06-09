@@ -28,7 +28,8 @@ namespace zpd
             try
             {
                 //host.AddServiceEndpoint(typeof(IZPDService), new WSHttpBinding(), "Service");
-                var smb = new ServiceMetadataBehavior { HttpGetEnabled = true };
+                var smb = new ServiceMetadataBehavior
+                              {HttpGetEnabled = true, MetadataExporter = {PolicyVersion = PolicyVersion.Policy15}};
                 host.Description.Behaviors.Add(smb);
                 host.Open();
                 Console.WriteLine("Service is ready at {0}. Press <ENTER> to terminate", localAddress);
