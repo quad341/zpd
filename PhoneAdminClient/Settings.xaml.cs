@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Microsoft.Phone.Controls;
 
 namespace PhoneAdminClient
 {
@@ -9,7 +8,7 @@ namespace PhoneAdminClient
         private readonly SettingsManager _settingsManager;
         public Settings()
         {
-            _settingsManager = new SettingsManager();
+            _settingsManager = SettingsManager.Instance;
             InitializeComponent();
             HostBox.Text = _settingsManager.Host;
             PortBox.Text = _settingsManager.Port;

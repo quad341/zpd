@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/zpd" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/zpd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="AuthPacket">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AuthTolken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientId" type="xs:int" />
+      <xs:element minOccurs="0" name="Offset" type="xs:int" />
+      <xs:element minOccurs="0" name="Timeout" type="tns:AuthTolkenTimeout" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AuthPacket" nillable="true" type="tns:AuthPacket" />
+  <xs:simpleType name="AuthTolkenTimeout">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unset" />
+      <xs:enumeration value="Any" />
+      <xs:enumeration value="FiveSeconds" />
+      <xs:enumeration value="TenSecionds" />
+      <xs:enumeration value="ThirtySeconds" />
+      <xs:enumeration value="SixtySeconds" />
+      <xs:enumeration value="NoAuth" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AuthTolkenTimeout" nillable="true" type="tns:AuthTolkenTimeout" />
+  <xs:complexType name="ArrayOfZpdTrack">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ZpdTrack" nillable="true" type="tns:ZpdTrack" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfZpdTrack" nillable="true" type="tns:ArrayOfZpdTrack" />
+  <xs:complexType name="ZpdTrack">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Album" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Artist" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Duration" type="xs:int" />
+      <xs:element minOccurs="0" name="MediaId" type="xs:int" />
+      <xs:element minOccurs="0" name="MediaTypeId" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ZpdTrack" nillable="true" type="tns:ZpdTrack" />
+  <xs:complexType name="ZpdCurrentPlayerState">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrentTrack" nillable="true" type="tns:ZpdTrack" />
+      <xs:element minOccurs="0" name="CurrentTrackPosition" type="xs:float" />
+      <xs:element minOccurs="0" name="IsPlaying" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Volume" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ZpdCurrentPlayerState" nillable="true" type="tns:ZpdCurrentPlayerState" />
+</xs:schema>

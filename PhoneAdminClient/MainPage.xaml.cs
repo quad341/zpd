@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Cryptography;
-using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Windows.Navigation;
@@ -30,7 +29,7 @@ namespace PhoneAdminClient
             _currentTrackIdentifier = -1;
             _clientId = -1;
             _packetCount = 0;
-            _settings = new SettingsManager();
+            _settings = SettingsManager.Instance;
 
             _data = new ObservableCollection<string> {"Loading tracks..."};
 
@@ -52,15 +51,7 @@ namespace PhoneAdminClient
 
         private void InitClient()
         {
-            if (null != _client)
-            {
-                _client.CloseAsync();
-                _client = null;
-            }
-
-            _client = new ZPDServiceClient(new BasicHttpBinding(),
-                                           new EndpointAddress("http://" + _settings.Host + ":" + _settings.Port +
-                                                               "/zpd"));
+            _client = ClientManager.InitAndGetClient();
 
             _client.PlayCompleted += PlayCompleted;
             _client.NextTrackCompleted += NextTrackCompleted;
@@ -76,6 +67,7 @@ namespace PhoneAdminClient
 
         private void GetCurrentQueueCompleted(object sender, GetCurrentQueueCompletedEventArgs e)
         {
+            ClientManager.RequestCount--;
             if (null == e.Error)
             {
                 _data.Clear();
@@ -94,6 +86,7 @@ namespace PhoneAdminClient
 
         private void GetNewClientIdCompleted(object sender, GetNewClientIdCompletedEventArgs e)
         {
+            ClientManager.RequestCount--;
             if (null == e.Error)
             {
                 _clientId = e.Result;
@@ -113,6 +106,7 @@ namespace PhoneAdminClient
 
         private void GetCurrentPlayerStateCompleted(object sender, GetCurrentPlayerStateCompletedEventArgs e)
         {
+            ClientManager.RequestCount--;
             if (null == e.Error && null != e.Result)
             {
                 CurrentTrackTitle.Text = e.Result.CurrentTrack.Name;
@@ -137,6 +131,7 @@ namespace PhoneAdminClient
 
         private void PauseCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            ClientManager.RequestCount--;
             if (null == e.Error)
             {
                 Debug.WriteLine("Pause succeeded");
@@ -149,6 +144,7 @@ namespace PhoneAdminClient
 
         private void PreviousTrackCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            ClientManager.RequestCount--;
             if (null == e.Error)
             {
                 StartUpdateCurrentTrackInfoFromServer();
@@ -162,6 +158,7 @@ namespace PhoneAdminClient
 
         private void NextTrackCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            ClientManager.RequestCount--;
             if (null == e.Error)
             {
                 StartUpdateCurrentTrackInfoFromServer();
@@ -175,6 +172,7 @@ namespace PhoneAdminClient
 
         private void PlayCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            ClientManager.RequestCount--;
             if (null == e.Error)
             {
                 StartUpdateCurrentTrackInfoFromServer();
@@ -188,7 +186,7 @@ namespace PhoneAdminClient
 
         private void PlayButtonClick(object sender, EventArgs e)
         {
-            _client.PlayAsync(GetAuthPacket());
+            StartClientRequest(() => _client.PlayAsync(GetAuthPacket()));
         }
 
         private AuthPacket GetAuthPacket()
@@ -227,22 +225,22 @@ namespace PhoneAdminClient
 
         private void NextTrackButtonClick(object sender, EventArgs e)
         {
-            _client.NextTrackAsync(GetAuthPacket());
+            StartClientRequest(() => _client.NextTrackAsync(GetAuthPacket()));
         }
 
         private void PauseButtonClick(object sender, EventArgs e)
         {
-            _client.PauseAsync(GetAuthPacket());
+            StartClientRequest(() => _client.PauseAsync(GetAuthPacket()));
         }
 
         private void PreviousTrackButtonClick(object sender, EventArgs e)
         {
-            _client.PreviousTrackAsync(GetAuthPacket());
+            StartClientRequest(() => _client.PreviousTrackAsync(GetAuthPacket()));
         }
 
         private void StartUpdateCurrentTrackInfoFromServer()
         {
-            _client.GetCurrentPlayerStateAsync();
+            StartClientRequest(() => _client.GetCurrentPlayerStateAsync());
         }
 
         private void SettingsClick(object sender, EventArgs e)
@@ -258,7 +256,28 @@ namespace PhoneAdminClient
         private void StartRefreshTrackList()
         {
             refreshPanel.IsRefreshing = true;
-            _client.GetCurrentQueueAsync();
+            StartClientRequest(() => _client.GetCurrentQueueAsync());
+        }
+
+        private void StartClientRequest(Action a)
+        {
+            if (ClientManager.CanOpenMoreRequests)
+            {
+                ClientManager.RequestCount++;
+                a.Invoke();
+            }
+            else
+            {
+                ResetUiState();
+            }
+        }
+
+        private void ResetUiState()
+        {
+            CurrentTrackArtist.Text = "";
+            CurrentTrackTitle.Text = "Connection lost..";
+            CurrentTrackTime.Text = "0:00/0:00";
+            _data.Clear();
         }
     }
 }

@@ -5,6 +5,7 @@ namespace PhoneAdminClient
     public class SettingsManager
     {
         private readonly IsolatedStorageSettings _appSettings = IsolatedStorageSettings.ApplicationSettings;
+        private static SettingsManager s_instance;
 
         private const string DEFAULT_HOST = "10.0.0.3";
         private const string DEFAULT_PORT = "8000";
@@ -13,8 +14,19 @@ namespace PhoneAdminClient
         public string Host { get; private set; }
         public string Port { get; private set; }
         public string Password { get; private set; }
+        public static SettingsManager Instance
+        {
+            get
+            {
+                if (null == s_instance)
+                {
+                    s_instance = new SettingsManager();
+                }
+                return s_instance;
+            }
+        }
 
-        public SettingsManager()
+        private SettingsManager()
         {
             Host = _appSettings.Contains("Host") ? _appSettings["Host"] as string : DEFAULT_HOST;
             Port = _appSettings.Contains("Port") ? _appSettings["Port"] as string : DEFAULT_PORT;
