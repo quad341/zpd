@@ -16,14 +16,7 @@ namespace PhoneAdminClient
         public string Password { get; private set; }
         public static SettingsManager Instance
         {
-            get
-            {
-                if (null == s_instance)
-                {
-                    s_instance = new SettingsManager();
-                }
-                return s_instance;
-            }
+            get { return s_instance ?? (s_instance = new SettingsManager()); }
         }
 
         private SettingsManager()

@@ -18,6 +18,8 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -28,45 +30,41 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel x:Name="ContentStack" Orientation="Vertical">
-                <Grid x:Name="CurrentTrackPanel">
-                      <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                
-                    <TextBlock x:Name="CurrentTrackTitle" Grid.Row="0" Grid.Column="0" Text="Loading..."/>
-                    <TextBlock x:Name="CurrentTrackTime" Grid.Row="0" Grid.Column="1" Text="0:00/0:00" TextAlignment="Right"/>
-                    <TextBlock x:Name="CurrentTrackArtist" Grid.Row="1" Grid.ColumnSpan="2" Text="Artist loading..."/>
-                </Grid>
-                <rlb:PullDownToRefreshPanel
+        <Grid x:Name="CurrentTrackPanel" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="CurrentTrackTitle" Grid.Row="0" Grid.Column="0" Text="Loading..."/>
+            <TextBlock x:Name="CurrentTrackTime" Grid.Row="0" Grid.Column="1" Text="0:00/0:00" TextAlignment="Right"/>
+            <TextBlock x:Name="CurrentTrackArtist" Grid.Row="1" Grid.ColumnSpan="2" Text="Artist loading..."/>
+        </Grid>
+        <rlb:PullDownToRefreshPanel
+                    Grid.Row="2"
             x:Name="refreshPanel"
             RefreshRequested="RefreshPanelRefreshRequested" />
-                <rlb:ReorderListBox
+        <rlb:ReorderListBox
+                    Grid.Row="3"
             x:Name="trackQueueListBox"
-            Grid.Row="3"
             Margin="12,0,12,12"
             IsReorderEnabled="True"
-            ItemsSource="{Binding}"
-            d:DataContext="{d:DesignData Source=ReorderListBox\\DesignData.xaml}">
-                    <rlb:ReorderListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock
+            ItemsSource="{Binding}">
+            <rlb:ReorderListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
                         Margin="12,4,12,4"
                         FontSize="36"
                         Text="{Binding}" />
-                        </DataTemplate>
-                    </rlb:ReorderListBox.ItemTemplate>
-                </rlb:ReorderListBox>
-            </StackPanel>
-        </Grid>
+                </DataTemplate>
+            </rlb:ReorderListBox.ItemTemplate>
+        </rlb:ReorderListBox>
     </Grid>
- 
+
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
