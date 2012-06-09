@@ -43,13 +43,14 @@
                     Grid.Row="3"
             x:Name="searchResultsListBox"
             Margin="12,0,12,12"
-            IsReorderEnabled="True"
+            IsReorderEnabled="False"
             ItemsSource="{Binding}">
             <rlb:ReorderListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock
                         Margin="12,4,12,4"
-                        FontSize="36"
+                        Style="{StaticResource PhoneTextNormalStyle}"
+                        TextWrapping="Wrap"
                         Text="{Binding}" />
                 </DataTemplate>
             </rlb:ReorderListBox.ItemTemplate>

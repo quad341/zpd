@@ -275,7 +275,7 @@ namespace PhoneAdminClient
         private void ResetUiState()
         {
             CurrentTrackArtist.Text = "";
-            CurrentTrackTitle.Text = "Connection lost..";
+            CurrentTrackTitle.Text = "No connection..";
             CurrentTrackTime.Text = "0:00/0:00";
             _data.Clear();
         }

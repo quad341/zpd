@@ -58,7 +58,7 @@
                 <DataTemplate>
                     <TextBlock
                         Margin="12,4,12,4"
-                        FontSize="36"
+                        Style="{StaticResource PhoneTextNormalStyle}"
                         Text="{Binding}" />
                 </DataTemplate>
             </rlb:ReorderListBox.ItemTemplate>
