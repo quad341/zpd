@@ -132,6 +132,15 @@ namespace zpd
             }
         }
 
+        public void MoveSongAtIndexToNewIndex(AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex)
+        {
+            if (TolkenAuthenticator.IsValid(authPacket))
+            {
+                ZuneMediaPlayerManager.Instance.RemoveTrackAtIndex(startIndex);
+                ZuneMediaPlayerManager.Instance.QueueTrackAtIndex(mediaId, mediaTypeId, destinationIndex);
+            }
+        }
+
         public ZpdCurrentPlayerState GetCurrentPlayerState()
         {
             return ZuneMediaPlayerManager.Instance.GetCurrentPlayerState();

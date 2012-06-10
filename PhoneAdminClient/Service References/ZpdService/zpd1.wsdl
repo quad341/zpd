@@ -104,6 +104,12 @@
   <wsdl:message name="IZPDService_RemoveTrackAtIndex_OutputMessage">
     <wsdl:part name="parameters" element="tns:RemoveTrackAtIndexResponse" />
   </wsdl:message>
+  <wsdl:message name="IZPDService_MoveSongAtIndexToNewIndex_InputMessage">
+    <wsdl:part name="parameters" element="tns:MoveSongAtIndexToNewIndex" />
+  </wsdl:message>
+  <wsdl:message name="IZPDService_MoveSongAtIndexToNewIndex_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MoveSongAtIndexToNewIndexResponse" />
+  </wsdl:message>
   <wsdl:message name="IZPDService_GetCurrentPlayerState_InputMessage">
     <wsdl:part name="parameters" element="tns:GetCurrentPlayerState" />
   </wsdl:message>
@@ -186,6 +192,10 @@
     <wsdl:operation name="RemoveTrackAtIndex">
       <wsdl:input wsam:Action="http://zpd/IZPDService/RemoveTrackAtIndex" message="tns:IZPDService_RemoveTrackAtIndex_InputMessage" />
       <wsdl:output wsam:Action="http://zpd/IZPDService/RemoveTrackAtIndexResponse" message="tns:IZPDService_RemoveTrackAtIndex_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MoveSongAtIndexToNewIndex">
+      <wsdl:input wsam:Action="http://zpd/IZPDService/MoveSongAtIndexToNewIndex" message="tns:IZPDService_MoveSongAtIndexToNewIndex_InputMessage" />
+      <wsdl:output wsam:Action="http://zpd/IZPDService/MoveSongAtIndexToNewIndexResponse" message="tns:IZPDService_MoveSongAtIndexToNewIndex_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetCurrentPlayerState">
       <wsdl:input wsam:Action="http://zpd/IZPDService/GetCurrentPlayerState" message="tns:IZPDService_GetCurrentPlayerState_InputMessage" />

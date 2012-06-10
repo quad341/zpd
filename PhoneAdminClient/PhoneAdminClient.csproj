@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReorderListBox\NegativeValueConverter.cs" />
     <Compile Include="ReorderListBox\PullDownToRefreshPanel.cs" />
+    <Compile Include="ReorderListBox\ReorderedItemEventArgs.cs" />
     <Compile Include="ReorderListBox\ReorderListBox.cs" />
     <Compile Include="ReorderListBox\ReorderListBoxItem.cs" />
     <Compile Include="Search.xaml.cs">

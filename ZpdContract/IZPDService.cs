@@ -56,6 +56,9 @@ namespace ZpdContract
         void RemoveTrackAtIndex(AuthPacket authPacket, int index);
 
         [OperationContract]
+        void MoveSongAtIndexToNewIndex(AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex);
+
+        [OperationContract]
         ZpdCurrentPlayerState GetCurrentPlayerState();
 
         [OperationContract]

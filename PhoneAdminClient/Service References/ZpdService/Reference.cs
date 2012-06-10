@@ -395,6 +395,11 @@ namespace PhoneAdminClient.ZpdService {
         
         void EndRemoveTrackAtIndex(System.IAsyncResult result);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://zpd/IZPDService/MoveSongAtIndexToNewIndex", ReplyAction="http://zpd/IZPDService/MoveSongAtIndexToNewIndexResponse")]
+        System.IAsyncResult BeginMoveSongAtIndexToNewIndex(PhoneAdminClient.ZpdService.AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex, System.AsyncCallback callback, object asyncState);
+        
+        void EndMoveSongAtIndexToNewIndex(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://zpd/IZPDService/GetCurrentPlayerState", ReplyAction="http://zpd/IZPDService/GetCurrentPlayerStateResponse")]
         System.IAsyncResult BeginGetCurrentPlayerState(System.AsyncCallback callback, object asyncState);
         
@@ -591,6 +596,12 @@ namespace PhoneAdminClient.ZpdService {
         
         private System.Threading.SendOrPostCallback onRemoveTrackAtIndexCompletedDelegate;
         
+        private BeginOperationDelegate onBeginMoveSongAtIndexToNewIndexDelegate;
+        
+        private EndOperationDelegate onEndMoveSongAtIndexToNewIndexDelegate;
+        
+        private System.Threading.SendOrPostCallback onMoveSongAtIndexToNewIndexCompletedDelegate;
+        
         private BeginOperationDelegate onBeginGetCurrentPlayerStateDelegate;
         
         private EndOperationDelegate onEndGetCurrentPlayerStateDelegate;
@@ -693,6 +704,8 @@ namespace PhoneAdminClient.ZpdService {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> QueueTrackAtIndexCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> RemoveTrackAtIndexCompleted;
+        
+        public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> MoveSongAtIndexToNewIndexCompleted;
         
         public event System.EventHandler<GetCurrentPlayerStateCompletedEventArgs> GetCurrentPlayerStateCompleted;
         
@@ -1437,6 +1450,59 @@ namespace PhoneAdminClient.ZpdService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult PhoneAdminClient.ZpdService.IZPDService.BeginMoveSongAtIndexToNewIndex(PhoneAdminClient.ZpdService.AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginMoveSongAtIndexToNewIndex(authPacket, startIndex, mediaId, mediaTypeId, destinationIndex, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        void PhoneAdminClient.ZpdService.IZPDService.EndMoveSongAtIndexToNewIndex(System.IAsyncResult result) {
+            base.Channel.EndMoveSongAtIndexToNewIndex(result);
+        }
+        
+        private System.IAsyncResult OnBeginMoveSongAtIndexToNewIndex(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            PhoneAdminClient.ZpdService.AuthPacket authPacket = ((PhoneAdminClient.ZpdService.AuthPacket)(inValues[0]));
+            int startIndex = ((int)(inValues[1]));
+            int mediaId = ((int)(inValues[2]));
+            int mediaTypeId = ((int)(inValues[3]));
+            int destinationIndex = ((int)(inValues[4]));
+            return ((PhoneAdminClient.ZpdService.IZPDService)(this)).BeginMoveSongAtIndexToNewIndex(authPacket, startIndex, mediaId, mediaTypeId, destinationIndex, callback, asyncState);
+        }
+        
+        private object[] OnEndMoveSongAtIndexToNewIndex(System.IAsyncResult result) {
+            ((PhoneAdminClient.ZpdService.IZPDService)(this)).EndMoveSongAtIndexToNewIndex(result);
+            return null;
+        }
+        
+        private void OnMoveSongAtIndexToNewIndexCompleted(object state) {
+            if ((this.MoveSongAtIndexToNewIndexCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.MoveSongAtIndexToNewIndexCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void MoveSongAtIndexToNewIndexAsync(PhoneAdminClient.ZpdService.AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex) {
+            this.MoveSongAtIndexToNewIndexAsync(authPacket, startIndex, mediaId, mediaTypeId, destinationIndex, null);
+        }
+        
+        public void MoveSongAtIndexToNewIndexAsync(PhoneAdminClient.ZpdService.AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex, object userState) {
+            if ((this.onBeginMoveSongAtIndexToNewIndexDelegate == null)) {
+                this.onBeginMoveSongAtIndexToNewIndexDelegate = new BeginOperationDelegate(this.OnBeginMoveSongAtIndexToNewIndex);
+            }
+            if ((this.onEndMoveSongAtIndexToNewIndexDelegate == null)) {
+                this.onEndMoveSongAtIndexToNewIndexDelegate = new EndOperationDelegate(this.OnEndMoveSongAtIndexToNewIndex);
+            }
+            if ((this.onMoveSongAtIndexToNewIndexCompletedDelegate == null)) {
+                this.onMoveSongAtIndexToNewIndexCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnMoveSongAtIndexToNewIndexCompleted);
+            }
+            base.InvokeAsync(this.onBeginMoveSongAtIndexToNewIndexDelegate, new object[] {
+                        authPacket,
+                        startIndex,
+                        mediaId,
+                        mediaTypeId,
+                        destinationIndex}, this.onEndMoveSongAtIndexToNewIndexDelegate, this.onMoveSongAtIndexToNewIndexCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.IAsyncResult PhoneAdminClient.ZpdService.IZPDService.BeginGetCurrentPlayerState(System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginGetCurrentPlayerState(callback, asyncState);
         }
@@ -1842,6 +1908,22 @@ namespace PhoneAdminClient.ZpdService {
             public void EndRemoveTrackAtIndex(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 base.EndInvoke("RemoveTrackAtIndex", _args, result);
+            }
+            
+            public System.IAsyncResult BeginMoveSongAtIndexToNewIndex(PhoneAdminClient.ZpdService.AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[5];
+                _args[0] = authPacket;
+                _args[1] = startIndex;
+                _args[2] = mediaId;
+                _args[3] = mediaTypeId;
+                _args[4] = destinationIndex;
+                System.IAsyncResult _result = base.BeginInvoke("MoveSongAtIndexToNewIndex", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public void EndMoveSongAtIndexToNewIndex(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                base.EndInvoke("MoveSongAtIndexToNewIndex", _args, result);
             }
             
             public System.IAsyncResult BeginGetCurrentPlayerState(System.AsyncCallback callback, object asyncState) {

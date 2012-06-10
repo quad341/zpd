@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using PhoneAdminClient.ReorderListBox;
 using PhoneAdminClient.ZpdService;
 
 namespace PhoneAdminClient
@@ -46,6 +47,15 @@ namespace PhoneAdminClient
             _timer = new Timer(TimerCallback, this, 0, 1000);
 
             trackQueueListBox.DataContext = _data;
+            trackQueueListBox.ItemsReordered += ItemsReorderedHandler;
+        }
+
+        private void ItemsReorderedHandler(object sender, ReorderedItemEventArgs re)
+        {
+            Debug.Assert(re.ReorderedItem is ZpdTrack);
+            var track = re.ReorderedItem as ZpdTrack;
+
+            StartClientRequest(() => _client.MoveSongAtIndexToNewIndexAsync(GetAuthPacket(), track.QueueIndex, track.MediaId, track.MediaTypeId, re.DestinationIndex));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -82,9 +92,23 @@ namespace PhoneAdminClient
             _client.GetCurrentQueueCompleted += GetCurrentQueueCompleted;
             _client.QueueTrackCompleted += QueueTrackCompleted;
             _client.RemoveTrackAtIndexCompleted += RemoveTrackCompleted;
+            _client.MoveSongAtIndexToNewIndexCompleted += MoveSongCompleted;
             _client.GetNewClientIdAsync();
             StartUpdateCurrentTrackInfoFromServer();
             StartRefreshTrackList();
+        }
+
+        private void MoveSongCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            ClientManager.RequestCount--;
+            if (null == e.Error)
+            {
+                StartRefreshTrackList();
+            }
+            else
+            {
+                Debug.WriteLine("Move song failed");
+            }
         }
 
         private void RemoveTrackCompleted(object sender, AsyncCompletedEventArgs e)

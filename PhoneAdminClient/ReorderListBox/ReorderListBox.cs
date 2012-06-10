@@ -222,6 +222,10 @@ namespace PhoneAdminClient.ReorderListBox
 
         #region Drag & drop reorder
 
+        public delegate void ItemsReorderedEventHandler(object sender, ReorderedItemEventArgs re);
+
+        public event ItemsReorderedEventHandler ItemsReordered;
+
         /// <summary>
         /// Called when the user presses down on the transparent drag-interceptor. Identifies the targed
         /// drag handle and list item and prepares for a drag operation.
@@ -600,6 +604,10 @@ namespace PhoneAdminClient.ReorderListBox
                 {
                     // Correct the scroll offset for the removed item so that the list doesn't appear to jump.
                     this.scrollViewer.ScrollToVerticalOffset(scrollOffset - 1);
+                }
+                if (null != ItemsReordered)
+                {
+                    ItemsReordered(this, new ReorderedItemEventArgs {ReorderedItem = item, DestinationIndex = toIndex});
                 }
                 return true;
             }

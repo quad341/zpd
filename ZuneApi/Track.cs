@@ -67,6 +67,18 @@ namespace VosSoft.ZuneLcd.Api
         /// <value>The current position.</value>
         public TimeSpan Position { get; internal set; }
 
+        /// <summary>
+        /// Gets the internal media id for the track as an int
+        /// </summary>
+        /// <value>The media id</value>
+        public int MediaId { get; private set; }
+
+        /// <summary>
+        /// Gets the internal media type id for the track as an int
+        /// </summary>
+        /// <value>The Type of the track</value>
+        public int ConvertedMediaTypeId { get; private set; }
+
         #endregion
 
         #region Optional Properties
@@ -221,10 +233,13 @@ namespace VosSoft.ZuneLcd.Api
                 Uri = trackUri;
                 Title = zuneTrack.Title;
                 Duration = zuneTrack.Duration;
+                MediaId = zuneTrack.ZuneMediaId.GetHashCode();
+                ConvertedMediaTypeId = (int) zuneTrack.MediaType;
 
                 if (zuneTrack is LibraryPlaybackTrack)
                 {
                     LibraryPlaybackTrack libraryPlaybackTrack = (LibraryPlaybackTrack)zuneTrack;
+                    MediaId = libraryPlaybackTrack.MediaId;
 
                     if (libraryPlaybackTrack.AlbumLibraryId > 0)
                     {

@@ -148,6 +148,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="MoveSongAtIndexToNewIndex">
+      <soap:operation soapAction="http://zpd/IZPDService/MoveSongAtIndexToNewIndex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetCurrentPlayerState">
       <soap:operation soapAction="http://zpd/IZPDService/GetCurrentPlayerState" style="document" />
       <wsdl:input>

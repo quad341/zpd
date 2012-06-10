@@ -87,6 +87,11 @@ namespace ZpdClientProxy
             Channel.RemoveTrackAtIndex(authPacket, index);
         }
 
+        public void MoveSongAtIndexToNewIndex(AuthPacket authPacket, int startIndex, int mediaId, int mediaTypeId, int destinationIndex)
+        {
+            Channel.MoveSongAtIndexToNewIndex(authPacket, startIndex, mediaId, mediaTypeId, destinationIndex);
+        }
+
         public ZpdCurrentPlayerState GetCurrentPlayerState()
         {
             return Channel.GetCurrentPlayerState();

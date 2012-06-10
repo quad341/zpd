@@ -28,7 +28,7 @@ namespace VosSoft.ZuneLcd.Api
         }
 
         public SearchTrack(Track track)
-            : this(0, 0, track.Title, track.Artist, track.Album, Convert.ToInt32(track.Duration.TotalSeconds))
+            : this(track.MediaId, track.ConvertedMediaTypeId, track.Title, track.Artist, track.Album, Convert.ToInt32(track.Duration.TotalSeconds))
         {
         }
 

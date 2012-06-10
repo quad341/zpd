@@ -50,7 +50,8 @@ namespace zpd
         {
             lock(this)
             {
-                _zune.PlayAt(index);
+                // All the indexes have to be altered by the base that we give them to clients
+                _zune.PlayAt(_zune.CurrentTrack.Index + 1 + index);
             }
         }
 
@@ -146,7 +147,8 @@ namespace zpd
         {
             lock(this)
             {
-                _zune.AddTrackToCurrentPlaylistAtIndex(mediaId, ZuneApi.MediaTypeFromInt(mediaTypeId), index);
+                // All the indexes have to be altered by the base that we give them to clients
+                _zune.AddTrackToCurrentPlaylistAtIndex(mediaId, ZuneApi.MediaTypeFromInt(mediaTypeId), _zune.CurrentTrack.Index + 1 + index);
             }
         }
 
