@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ZpdContract" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ZpdContract" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://10.0.0.6:8000/zpd?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/zpd" />
+  <xs:complexType name="AuthPacket">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AuthTolken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClientId" type="xs:int" />
+      <xs:element minOccurs="0" name="Offset" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/zpd" minOccurs="0" name="Timeout" type="q1:AuthTolkenTimeout" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AuthPacket" nillable="true" type="tns:AuthPacket" />
+</xs:schema>

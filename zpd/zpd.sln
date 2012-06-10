@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZpdContract", "..\ZpdContra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZpdClientProxy", "..\ZpdClientProxy\ZpdClientProxy.csproj", "{FBFFA59C-9297-48ED-A3BB-29FB4CEB9EFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZpdWebClient", "..\ZpdWebClient\ZpdWebClient.csproj", "{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,16 @@ Global
 		{FBFFA59C-9297-48ED-A3BB-29FB4CEB9EFC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FBFFA59C-9297-48ED-A3BB-29FB4CEB9EFC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FBFFA59C-9297-48ED-A3BB-29FB4CEB9EFC}.Release|x86.ActiveCfg = Release|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E32C9F6F-1E8A-46DC-9C06-DD8E20730D87}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
