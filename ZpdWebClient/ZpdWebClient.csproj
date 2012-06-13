@@ -73,6 +73,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ClientManager.cs" />
+    <Compile Include="Models\TrackToQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\ZPDService\Reference.cs">
       <AutoGen>True</AutoGen>

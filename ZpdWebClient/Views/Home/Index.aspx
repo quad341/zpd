@@ -3,26 +3,47 @@
 <asp:Content runat="server" ID="Title" ContentPlaceHolderID="TitleContent">Welcome to ZPD. We are the next Jukebox</asp:Content>
 
 <asp:Content runat="server" ID="Head" ContentPlaceHolderID="HeadContent">
+        <style type="text/css">
+            .evenrow { background-color: #E5E5E5; }
+        </style>
         <script type="text/javascript">
-            var currentState = { 'Name': "", 'Artist': "", 'CurrentTrackPosition': 0 };
+            function PerformSearch() {
+                var query = $("#search").val();
+                $.get('home/Search?query=' + query, null, function (data) {
+                    var results = $("#results");
+                    results.html('<tr><th>Trace Name</th><th>Artist</th><th>Album</th><th>Enqueue</th></tr>');
+                    for (var i = 0; i < data.length; i++) {
+                        results.append("<tr id='" + data[i].MediaId + '-' + data[i].MediaTypeId + "'><td>" + data[i].Name + "</td><td>" + data[i].Artist + "</td><td>" + data[i].Album + "</td><td><button type='button'>Enqueue</button></td></tr>");
+                    }
+                    $("#results tr:even").addClass("evenrow");
 
-            setInterval(UpdateCurrentStatus, 1000);
-            function UpdateCurrentStatus() {
-                $.get('home/GetCurrentPlayerState', null, function (data) {
-                    $('#currentTrackName').html(data.Name);
-                    $('#currentTrackArtists').html(data.Artist);
-                    $('#currentTrackPosition').html(data.CurrentTrackPosition);
+                    $('#results button').click(function() {
+                        var source = $(this).parents('tr')[0];
+                        if ("results" != source.id) {
+                            var parts = source.id.split('-');
+                            $.post('home/QueueTrack', { MediaId: parts[0], MediaTypeId: parts[1] }, function() {
+                                $(source).fadeOut('slow');
+                                UpdateSongQueue();
+                            });
+                        }
+                    });
                 });
+                
+                
             }
-    </script>
+        </script>
 </asp:Content>
 
 
 <asp:Content ID="BodyContent" runat="server" contentplaceholderid="MainContent">
-    Index page. We'll want a search box in the middle and the status on the right
     
     <div>
-        We're currently playing <span id="currentTrackName"><%= Model.CurrentTrack.Name %></span> by <span id="currentTrackArtists"><%= Model.CurrentTrack.Artist %></span>. It is <span id="currentTrackPosition"><%= Model.CurrentTrackPosition %></span> seconds in.
+        <h3>Search</h3>
+        <form action="#" onsubmit="PerformSearch(); return false;">
+            <input type="text" id="search" name="search" size="200"/>
+            <button>Search</button>
+        </form>
+        <table id="results"><tr id="header"><th>Trace Name</th><th>Artist</th><th>Album</th><th>Enqueue</th></tr></table>
     </div>
 </asp:Content>
 

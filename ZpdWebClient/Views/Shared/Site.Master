@@ -19,6 +19,38 @@ Released   : 20100508
     
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" media="screen" />
     <script type="text/javascript" src="/Scripts/jquery-1.4.1-vsdoc.js"></script>
+    <script type="text/javascript">
+        var currentTrackId = 0;
+
+        UpdateCurrentStatus();
+        UpdateSongQueue();
+        setInterval(UpdateCurrentStatus, 1000);
+        setInterval(UpdateSongQueue, 30000);
+        function UpdateCurrentStatus() {
+            $.get('home/GetCurrentPlayerState', null, function (data) {
+                $('#currentTrackName').html(data.CurrentTrack.Name);
+                $('#currentTrackArtist').html(data.CurrentTrack.Artist);
+                $('#currentTrackPosition').html(data.CurrentTrackPosition); // format
+                $('#currentTrackDuration').html(data.CurrentTrack.Duration); // format
+
+                if (currentTrackId != data.CurrentTrack.MediaId) {
+                    currentTrackId = data.CurrentTrack.MediaId;
+                    UpdateSongQueue();
+                }
+            });
+        }
+        
+        function UpdateSongQueue()
+        {
+            $.get('home/GetCurrentQueue', null, function(data) {
+                var queue = $('#queue');
+                queue.html('');
+                for (var i = 0; i < data.length; i++) {
+                    queue.append('<li>' + data[i].Name + ' - ' + data[i].Artist + '</li>');
+                }
+            });
+        }
+    </script>
     <asp:ContentPlaceHolder runat="server" ID="HeadContent"/>
 
 </head>
@@ -80,23 +112,15 @@ Released   : 20100508
 				<div id="sidebar">
 					<ul>
 						<li>
-							<h2>Aliquam tempus</h2>
-							<p>Mauris vitae nisl nec metus placerat perdiet est. Phasellus dapibus semper urna. Pellentesque ornare, orci in consectetuer hendrerit, volutpat.</p>
+							<h2>Currently Playing</h2>
+							<p><span id="currentTrackName"></span> - <span id="currentTrackArtist"></span> (<span id="currentTrackPosition"></span>/<span id="currentTrackDuration"></span>)</p>
 						</li>
 						<li>
-							<h2>Pellenteque ornare </h2>
-							<ul>
-								<li><a href="#">Nec metus sed donec</a></li>
-								<li><a href="#">Magna  bibendum mauris</a></li>
-								<li><a href="#">Velit semper nisi molestie</a></li>
-								<li><a href="#">Eget tempor eget nonummy</a></li>
-								<li><a href="#">Nec metus sed donec</a></li>
-								<li><a href="#">Velit semper nisi molestie</a></li>
-								<li><a href="#">Eget tempor eget nonummy</a></li>
-								<li><a href="#">Nec metus sed donec</a></li>
+							<h2>Current Queue</h2>
+							<ul id="queue">
 							</ul>
 						</li>
-						<li>
+						<!--<li>
 							<h2>Turpis nulla</h2>
 							<ul>
 								<li><a href="#">Nec metus sed donec</a></li>
@@ -109,7 +133,7 @@ Released   : 20100508
 								<li><a href="#">Velit semper nisi molestie</a></li>
 								<li><a href="#">Eget tempor eget nonummy</a></li>
 							</ul>
-						</li>
+						</li>-->
 					</ul>
 				</div>
 				<!-- end #sidebar -->

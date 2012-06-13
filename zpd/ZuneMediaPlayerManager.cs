@@ -183,15 +183,19 @@ namespace zpd
             lock(this)
             {
                 var startIndex = _zune.CurrentTrack.Index + 1;
-                var tracks =
-                    ConvertSearchTracksToZpdTracks(_zune.GetTracksAsSearchTrackSynchronous(
-                        startIndex /*startIndex*/, 0
-                                                       /*count, 0=all*/));
-                // add their queue indexes
-                var i = 0;
-                foreach (var track in tracks)
+                IEnumerable<ZpdTrack> tracks = new List<ZpdTrack>();
+                if (startIndex < _zune.TrackCount)
                 {
-                    track.QueueIndex = startIndex + i++;
+                    tracks =
+                        ConvertSearchTracksToZpdTracks(_zune.GetTracksAsSearchTrackSynchronous(
+                            startIndex /*startIndex*/, 0
+                                                           /*count, 0=all*/));
+                    // add their queue indexes
+                    var i = 0;
+                    foreach (var track in tracks)
+                    {
+                        track.QueueIndex = startIndex + i++;
+                    }
                 }
                 return tracks;
             }
