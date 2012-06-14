@@ -54,6 +54,7 @@
                         for (var i = 0; i < data.length; i++) {
                             queue.append('<li data-theme="c" data-corners="false" data-shadow="false" data-wrapperEls="div" data-iconpos="right"><h3><strong>' + data[i].Name + '</strong></h3><p><strong>' + data[i].Artist + '</strong></p></li>');
                         }
+                        queue.listview('refresh');
                     });
                 }
 
@@ -63,8 +64,9 @@
                         var results = $("#searchResults");
                         results.html('');
                         for (var i = 0; i < data.length; i++) {
-                            results.append('<li id="result'+data[i].MediaId+'" data-theme="c" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperEls="div" data-icon="plus" data-iconpos="right"><a class="ui-link-inherit" href="javascript:Enqueue('+data[i].MediaId+','+data[i].MediaTypeId+')"><h3><strong>'+data[i].Name+'</strong></h3><p><strong>'+data[i].Artist+'</strong></p><p>'+data[i].Album+'</p></a></li>');
+                            results.append('<li id="result' + data[i].MediaId + '" data-theme="c" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperEls="div" data-icon="plus" data-iconpos="right"><a class="ui-link-inherit" href="javascript:Enqueue(' + data[i].MediaId + ',' + data[i].MediaTypeId + ')"><h3><strong>' + data[i].Name + '</strong></h3><p><strong>' + data[i].Artist + '</strong></p><p>' + data[i].Album + '</p></a></li>');
                         }
+                        results.listview('refresh');
                     });
                 }
                 function Enqueue(mediaId, mediaTypeId) {
