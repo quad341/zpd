@@ -82,6 +82,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\ajax-loader.png" />
+    <Content Include="Content\images\icons-18-black.png" />
+    <Content Include="Content\images\icons-18-white.png" />
+    <Content Include="Content\images\icons-36-black.png" />
+    <Content Include="Content\images\icons-36-white.png" />
     <Content Include="Content\images\img01.jpg" />
     <Content Include="Content\images\img02.jpg" />
     <Content Include="Content\images\img03.jpg" />
@@ -90,6 +96,9 @@
     <Content Include="Content\images\img06.gif" />
     <Content Include="Content\images\img07.gif" />
     <Content Include="Content\images\img08.gif" />
+    <Content Include="Content\jquery.mobile-1.1.0.css" />
+    <Content Include="Content\jquery.mobile.structure-1.1.0.css" />
+    <Content Include="Content\jquery.mobile.theme-1.1.0.css" />
     <Content Include="Content\license.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -100,6 +109,8 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Scripts\jquery-1.7.2.js" />
+    <Content Include="Scripts\jquery.mobile-1.1.0.js" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
