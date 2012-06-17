@@ -617,7 +617,9 @@ namespace VosSoft.ZuneLcd.Api
 
             Application.DeferredInvoke(new DeferredInvokeHandler(delegate(object sender)
             {
-                ArrayListDataSet playlist = TransportControls.Instance.CurrentPlaylist;
+                // Make a local copy of the playlist to avoid race conditions
+                ArrayListDataSet playlist = new ArrayListDataSet();
+                playlist.CopyFrom(TransportControls.Instance.CurrentPlaylist);
 
                 if (playlist == null)
                     return;
