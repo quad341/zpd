@@ -11,6 +11,7 @@
                 form { font-size: 20px; }
                 .evenrow { background-color: #E5E5E5; }
                 
+                #loading { text-align: center; }
                 #queue li { background-color: #78a614; }
                 #reset { background-color: #cd2c24; }
                 
@@ -30,6 +31,7 @@
 
                 UpdateCurrentStatus();
                 UpdateSongQueue();
+                $(document).ready(function () {$("#loading").hide(); $("#noResults").hide();});
                 setInterval(UpdateCurrentStatus, 1000);
                 setInterval(UpdateSongQueue, 30000);
                 function GetFormattedTimespan(seconds) {
@@ -78,6 +80,8 @@
 
                 function PerformSearch() {
                     var query = $("#searchInput").val();
+                    $("#loading").show();
+                    $("#noResults").hide();
                     $.get('<%= Url.Action("Search") %>?query=' + query, null, function (data) {
                         var results = $("#searchResults");
                         results.html('');
@@ -85,6 +89,11 @@
                             results.append('<li id="result' + data[i].MediaId + '" data-theme="c" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperEls="div" data-icon="plus" data-iconpos="right"><a class="ui-link-inherit" href="javascript:Enqueue(' + data[i].MediaId + ',' + data[i].MediaTypeId + ')"><h3><strong>' + data[i].Name + '</strong></h3><p><strong>' + data[i].Artist + '</strong></p><p>' + data[i].Album + '</p></a></li>');
                         }
                         results.listview('refresh');
+                        $("#loading").hide();
+
+                        if (0 == data.length) {
+                            $("#noResults").show();
+                        }
                     });
                 }
                 function Enqueue(mediaId, mediaTypeId) {
@@ -111,6 +120,8 @@
                     <h3>Search</h3>
                         <input type="text" id="searchInput" name="searchInput" size="200" onkeypress="searchKeyPress();"/>
                         <button type="button" onclick="PerformSearch();">Search</button>
+                        <div id="noResults">Sorry, no results were found</div>
+                        <div id="loading"><img src="<%= Url.Content("~/Content/images/ajax-loader.gif") %>" alt="Loading..." /></div>
                     <ul id="searchResults" class="ui-corner-all ui-shadow" data-role="listview" data-inset="true">
                     </ul>
                     <button id="reset" type="button" onclick="document.getElementById('searchResults').innerHTML=''">Clear</button>
