@@ -6,10 +6,13 @@
 	        <meta name="viewport" content="width=device-width, initial-scale=1"/>
             <title>Welcome to ZPD. We are the next Jukebox</title>
 
-            <link rel="stylesheet" type="text/css" href="/Content/jquery.mobile-1.1.0.css" />
+            <link rel="stylesheet" type="text/css" href="<%= Url.Content("~/Content/jquery.mobile-1.1.0.css") %>" />
             <style type="text/css">
                 form { font-size: 20px; }
                 .evenrow { background-color: #E5E5E5; }
+                
+                #queue li { background-color: #78a614; }
+                #reset { background-color: #cd2c24; }
                 
                 @media all and (min-width: 750px) {
                     #searchPane { float: left; width: 45%; margin-right: 10%; }
@@ -17,8 +20,8 @@
                 }
             </style>
 
-            <script type="text/javascript" src="/Scripts/jquery-1.7.2.js"></script>
-            <script type="text/javascript" src="/Scripts/jquery.mobile-1.1.0.js"></script>
+            <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery-1.7.2.js") %>"></script>
+            <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery.mobile-1.1.0.js") %>"></script>
             <script type="text/javascript">
                 var currentTrackId = 0;
                 var useMobileVersion = false;
@@ -85,7 +88,7 @@
     </script>
     </head>
     <body class="ui-mobile-viewport">
-        <div data-role="page" class="type-home">
+        <div>
             <div data-role="header">ZPD</div>
 	        <div data-role="content">
                 <div id="searchPane">
@@ -94,7 +97,7 @@
                         <button type="button" onclick="PerformSearch();">Search</button>
                     <ul id="searchResults" class="ui-corner-all ui-shadow" data-role="listview" data-inset="true">
                     </ul>
-                    <button type="button" onclick="document.getElementById('searchResults').innerHTML=''">Clear</button>
+                    <button id="reset" type="button" onclick="document.getElementById('searchResults').innerHTML=''">Clear</button>
                 </div>
                 <div id="currentStatusPane">
                     <div>
