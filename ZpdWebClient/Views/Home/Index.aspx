@@ -23,7 +23,9 @@
             <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery-1.7.2.js") %>"></script>
             <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery.mobile-1.1.0.js") %>"></script>
             <script type="text/javascript">
-                var currentTrackId = 0;
+                var currentTrackId = <%= Model.CurrentTrack.MediaId %>;
+                var currentTrackPosition = <%= Model.CurrentTrackPosition %>;
+                var currentTrackDuration = <%= Model.CurrentTrack.Duration %>;
                 var useMobileVersion = false;
 
                 UpdateCurrentStatus();
@@ -37,11 +39,19 @@
                     return "" + d.getMinutes() + ":" + seconds;
                 }
                 function UpdateCurrentStatus() {
-                    $.get('home/GetCurrentPlayerState', null, function (data) {
+                    // in case the callback is slow, we assume we're on the same track
+                    if (currentTrackPosition < currentTrackDuration) {
+                        currentTrackPosition++;
+                        UpdateSongPositionDisplay();
+                    }
+                    $.get('<%= Url.Action("GetCurrentPlayerState") %>', null, function (data) {
                         $('#currentTrackName').html(data.CurrentTrack.Name);
                         $('#currentTrackArtist').html(data.CurrentTrack.Artist);
-                        $('#currentTrackPosition').html(GetFormattedTimespan(data.CurrentTrackPosition));
-                        $('#currentTrackDuration').html(GetFormattedTimespan(data.CurrentTrack.Duration));
+
+                        currentTrackPosition = data.CurrentTrackPosition;
+                        currentTrackDuration = data.CurrentTrack.Duration;
+
+                        UpdateSongPositionDisplay();
 
                         if (currentTrackId != data.CurrentTrack.MediaId) {
                             currentTrackId = data.CurrentTrack.MediaId;
@@ -50,8 +60,13 @@
                     });
                 }
 
+                function UpdateSongPositionDisplay() {
+                    $('#currentTrackPosition').html(GetFormattedTimespan(currentTrackPosition));
+                    $('#currentTrackDuration').html(GetFormattedTimespan(currentTrackDuration));
+                }
+
                 function UpdateSongQueue() {
-                    $.get('home/GetCurrentQueue', null, function (data) {
+                    $.get('<%= Url.Action("GetCurrentQueue") %>', null, function (data) {
                         var queue = $('#queue');
                         queue.html('');
                         for (var i = 0; i < data.length; i++) {
@@ -63,7 +78,7 @@
 
                 function PerformSearch() {
                     var query = $("#searchInput").val();
-                    $.get('home/Search?query=' + query, null, function (data) {
+                    $.get('<%= Url.Action("Search") %>?query=' + query, null, function (data) {
                         var results = $("#searchResults");
                         results.html('');
                         for (var i = 0; i < data.length; i++) {
@@ -73,7 +88,7 @@
                     });
                 }
                 function Enqueue(mediaId, mediaTypeId) {
-                    $.post('home/QueueTrack', { MediaId: mediaId, MediaTypeId: mediaTypeId }, function () {
+                    $.post('<%= Url.Action("QueueTrack") %>', { MediaId: mediaId, MediaTypeId: mediaTypeId }, function () {
                         $('#result'+mediaId).fadeOut('slow');
                         UpdateSongQueue();
                     });
@@ -88,6 +103,7 @@
     </script>
     </head>
     <body class="ui-mobile-viewport">
+    
         <div>
             <div data-role="header">ZPD</div>
 	        <div data-role="content">
@@ -102,7 +118,7 @@
                 <div id="currentStatusPane">
                     <div>
 						<h2>Currently Playing</h2>
-						<p><span id="currentTrackName">Track name</span> - <span id="currentTrackArtist">track artist</span> (<span id="currentTrackPosition">1:00</span>/<span id="currentTrackDuration">2:00</span>)</p>
+						<p><span id="currentTrackName"><%= Model.CurrentTrack.Name %></span> - <span id="currentTrackArtist"><%= Model.CurrentTrack.Artist %></span> (<span id="currentTrackPosition">0:00</span>/<span id="currentTrackDuration">0:00</span>)</p>
 					</div>
 					<div>
 						<h2>Current Queue</h2>
