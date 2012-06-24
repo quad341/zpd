@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Web.Mvc;
 using ZpdWebClient.Models;
 using ZpdWebClient.ZPDService;
@@ -7,6 +8,7 @@ namespace ZpdWebClient.Controllers
 {
     public class HomeController : Controller
     {
+        private Hashtable _requests = new Hashtable();
         //
         // GET: /Home/
 
@@ -75,15 +77,29 @@ namespace ZpdWebClient.Controllers
 
         public JsonResult QueueTrack(TrackToQueue track)
         {
+            var succeeded = true;
             try
             {
-                ClientManager.Client.QueueTrack(track.MediaId, track.MediaTypeId);
+                lock (this)
+                {
+                    var requestTime = RequestManager.GetLastRequestedTime(track.MediaId);
+                    if (null != requestTime && requestTime.HasValue && requestTime.Value >= DateTime.Now.AddHours(-1))
+                    {
+                        succeeded = false;
+                    }
+
+                    if (succeeded)
+                    {
+                        RequestManager.UpdateLastRequestedTime(track.MediaId);
+                        ClientManager.Client.QueueTrack(track.MediaId, track.MediaTypeId);
+                    }
+                }
             }
             catch
             {
                 // eat the exception
             }
-            return Json(track);
+            return Json(new { Succeeded = succeeded, Track = track });
         }
 
     }

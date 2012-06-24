@@ -27,7 +27,8 @@
                 var currentTrackId = <%= Model.CurrentTrack.MediaId %>;
                 var currentTrackPosition = <%= Model.CurrentTrackPosition %>;
                 var currentTrackDuration = <%= Model.CurrentTrack.Duration %>;
-                var useMobileVersion = false;
+
+                var trackNameHash = [];
 
                 UpdateCurrentStatus();
                 UpdateSongQueue();
@@ -37,8 +38,8 @@
                 function GetFormattedTimespan(seconds) {
                     // create a standard date with no minutes; add seconds, get minutes
                     var d = new Date(2000, 1, 1, 12, 0, seconds, 0);
-                    var seconds = d.getSeconds().toString().length < 2 ? "0" + d.getSeconds() : d.getSeconds();
-                    return "" + d.getMinutes() + ":" + seconds;
+                    var s = d.getSeconds().toString().length < 2 ? "0" + d.getSeconds() : d.getSeconds();
+                    return "" + d.getMinutes() + ":" + s;
                 }
                 function UpdateCurrentStatus() {
                     // in case the callback is slow, we assume we're on the same track
@@ -86,7 +87,7 @@
                         var results = $("#searchResults");
                         results.html('');
                         for (var i = 0; i < data.length; i++) {
-                            results.append('<li id="result' + data[i].MediaId + '" data-theme="c" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperEls="div" data-icon="plus" data-iconpos="right"><a class="ui-link-inherit" href="javascript:Enqueue(' + data[i].MediaId + ',' + data[i].MediaTypeId + ')"><h3><strong>' + data[i].Name + '</strong></h3><p><strong>' + data[i].Artist + '</strong></p><p>' + data[i].Album + '</p></a></li>');
+                            results.append('<li id="result' + data[i].MediaId + '" data-theme="c" data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperEls="div" data-icon="plus" data-iconpos="right"><a class="ui-link-inherit" href="javascript:Enqueue(' + data[i].MediaId + ',' + data[i].MediaTypeId + ',\'' + data[i].Name + '\')"><h3><strong>' + data[i].Name + '</strong></h3><p><strong>' + data[i].Artist + '</strong></p><p>' + data[i].Album + '</p></a></li>');
                         }
                         results.listview('refresh');
                         $("#loading").hide();
@@ -96,10 +97,19 @@
                         }
                     });
                 }
-                function Enqueue(mediaId, mediaTypeId) {
-                    $.post('<%= Url.Action("QueueTrack") %>', { MediaId: mediaId, MediaTypeId: mediaTypeId }, function () {
-                        $('#result'+mediaId).fadeOut('slow');
-                        UpdateSongQueue();
+                function Enqueue(mediaId, mediaTypeId, name) {
+                    trackNameHash[mediaId] = name;
+                    $.post('<%= Url.Action("QueueTrack") %>', { MediaId: mediaId, MediaTypeId: mediaTypeId }, function (data) {
+                        if (data.Succeeded)
+                        {
+                            $('#result'+mediaId).fadeOut('slow');
+                            UpdateSongQueue();
+                        }
+                        else
+                        {
+                            // this should probably be better than a damned alert
+                            alert(trackNameHash[mediaId] + " has been enqueued too recently!");
+                        }
                     });
                 }
                 function searchKeyPress() {
