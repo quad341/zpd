@@ -86,6 +86,14 @@ namespace VosSoft.ZuneLcd.Api
         /// <seealso cref="Ready"/>
         public bool IsReady { get; private set; }
 
+
+        /// <summary>
+        /// Gets a value indicating whether the Zune software is actually closed.
+        /// </summary>
+        /// <value><c>true</c> if the Zune software is closed; otherwise, <c>false</c>.</value>
+        /// <seealso cref="Ready"/>
+        public bool IsClosed { get; private set; }
+
         /// <summary>
         /// Gets or sets the state of the Zune Software window.
         /// </summary>
@@ -436,7 +444,7 @@ namespace VosSoft.ZuneLcd.Api
         /// </summary>
         public ZuneApi()
         {
-            IsRunning = IsReady = false;
+            IsRunning = IsReady = IsClosed = false;
             PlayerState = PlayerState.Uninitialized;
             TrackState = TrackState.Invalid;
             CurrentTrack = new Track();
@@ -489,7 +497,10 @@ namespace VosSoft.ZuneLcd.Api
         public void Close()
         {
             if (IsRunning)
+            {
+                IsClosed = true;
                 Application.DeferredInvoke(new DeferredInvokeHandler(CloseZune), null, DeferredInvokePriority.Normal);
+            }
         }
 
         /// <summary>
@@ -1070,11 +1081,21 @@ namespace VosSoft.ZuneLcd.Api
             if (Starting != null)
                 Starting(this, EventArgs.Empty);
 
-            ZuneApplication.Launch(zuneArgs, IntPtr.Zero);
+            try
+            {
+                ZuneApplication.Launch(zuneArgs, IntPtr.Zero);
+            }
+            catch (Exception) // IndexOutOfRangeException
+            {
+                // eat the exception
+            }
 
-            IsRunning = IsReady = false;
-            if (Closed != null)
-                Closed(this, EventArgs.Empty);
+            if (IsClosed)
+            {
+                IsRunning = IsReady = false;
+                if (Closed != null)
+                    Closed(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>

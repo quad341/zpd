@@ -22,7 +22,7 @@ namespace zpd
         {
             if (TolkenAuthenticator.IsValid(authPacket))
             {
-                ZuneMediaPlayerManager.Instance.Play();
+                ZuneMediaPlayerManager.Instance.Pause();
             }
         }
 
